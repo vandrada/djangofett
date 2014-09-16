@@ -1,0 +1,15 @@
+Current requirements for Final UI Project:
+
+***Get comfortable with Django/HTML/CSS!***
+
+
+- 5 or 6 different pages
+- Base CSS for whole website (other CSS will 'inherit' from this one)
+- Home page
+- A list of games
+- User reviews
+- A good text editor for the reviews (markdown, BBcode, etc)
+- A search system for games
+- Rating system for games
+- Reputation system for users
+- Clean layout, eye-candy
