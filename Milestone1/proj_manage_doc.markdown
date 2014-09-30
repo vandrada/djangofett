@@ -33,6 +33,20 @@ might include:
 *Difficulty using the site due to a physical disability*
 *Loss of repuation due to making a fool of oneself online*
 
+###How we will minimize these risks:
+We'll partner up with Amazon and other online retailers and offer users deals from their
+sites with links. This will generate revenue that will offset any loss of ad revenue.
+
+We will also use a unique style for our site's design that will set it apart from similar sites
+such as GameFAQS or Gamespot. This will prevent any copyright issues.
+
+The reputation system, as well as the comments section for games, will make the website
+fun to use and encourage people without accounts to sign up.
+
+As for the user risks, we will use cutting edge hashing algorithms to securely store all user's
+passwords in our database. We will also use a screen reader for the site to accomodate those with
+blindness. We will also warn users before they post something stupid or inappropriate.
+
 <!---TODO: Might make more User risks -->
 ##III. Evaluation criteria and methods
 ###We plan to run a user study to evaluate usability.
@@ -85,4 +99,6 @@ their passwords could also ensure a minimum of password cracking.
 ##VII. Future needs
 A forum would be absolutely essential to the growth of the website community wise. If forums for each
 game could be implemented that would spur tons of site traffic and conversation, which would do
-very well for the site's ad revenue.
+very well for the site's ad revenue and other means of revenue (links to other sites). Also, a
+friend system and private messaging system would also prove to be quite useful and, similar to
+forums, would spur more conversation and use of the site.
