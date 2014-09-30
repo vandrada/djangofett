@@ -1,28 +1,38 @@
 # Demographics
-Gender
+##Gender
 [x] Male
+
 [ ] Female
 
-Age
+##Age
 [ ] 18 or younger
+
 [x] 19 - 25
+
 [ ] 26 - 35
+
 [ ] 36 or older
 
 Seventy-six percent of the respondents were male and fifty-nine percent of the
 respondents were between nineteen and twenty-five years old.
 
 # Video Game Habits
-Devices:
+##Devices:
 [x] Console
+
 [x] Computer
+
 [ ] Portable
+
 [ ] Smart phones
 
-Frequency:
+##Frequency:
 [ ] Rarely
+
 [x] Daily
+
 [ ] Weekly
+
 [ ] Monthly
 
 Most of the respondents played video games on a combination of computers and
@@ -33,6 +43,7 @@ least once a day.
 
 # Internet Participation Level
 [x] Discussions
+
 [x] Daily polls/questions
 
 Respondents were almost split when it came to discussing video games on the
@@ -43,12 +54,14 @@ that they participate on daily questions/polls sometimes. For most of the
 respondents, a reputation/ranking system doesn't matter.
 
 # Reviews
-Importance:
+##Importance:
 [x] Important
+
 [ ] Not Important
 
-Source:
+##Source:
 [ ] Professional Reviews
+
 [x] Word of mouth
 
 Most respondents viewed reviews in a favorable light, however, they were also
@@ -63,12 +76,14 @@ with those that answered two on a five point scale with five being very
 interested, most respondents had little or no interest in modifying video games.
 
 # Consumer Profile
-Publishers:
+##Publishers:
 [x] AAA publishers
+
 [ ] Other
 
-Preferred Medium:
+##Preferred Medium:
 [ ] Physical copy
+
 [x] Digital copy
 
 A majority of the respondents prefer video games from AAA publishers (Valve,
