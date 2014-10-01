@@ -82,7 +82,7 @@
 ##3.Physical
       
 * The site will need to be hosted. No other resources will be needed in
-* order for it to function.
+  order for it to function.
   
 * This site will not support mobile devices.
 
