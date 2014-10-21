@@ -16,3 +16,54 @@ Current requirements for Final UI Project:
 
 Interesting Python modules
 - python-social-auth (let's people sign in with Google, Facebook, etc.)
+- django-taggit (Easy to use tagging module)
+
+
+Current project layout (models):
+
+Review Comment
+--------------
+UserId
+reviewId
+reportedCount
+body
+timestamp
+
+
+Review
+------
+karma
+authorId
+title
+body
+gameId
+ID
+timestamp(s)
+reportedCount
+
+
+User (admin extends this!)
+----
+username
+email
+pasword
+id
+
+Polls
+-----
+Question
+id
+
+
+Answers
+-------
+ID
+vote_count
+
+Game
+----
+Title
+id
+Publisher
+#tag
+releaseDate
