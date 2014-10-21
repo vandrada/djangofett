@@ -13,3 +13,6 @@ Current requirements for Final UI Project:
 - Rating system for games
 - Reputation system for users
 - Clean layout, eye-candy
+
+Interesting Python modules
+- python-social-auth (let's people sign in with Google, Facebook, etc.)
