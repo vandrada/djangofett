@@ -38,7 +38,15 @@ class User(AuthUser):
     """
     def __str__(self):
         return self.username
-
+    
+    """
+    Add up all the karma from the user's reviews.
+    """
+    def get_karma(self):
+        total = 0
+        for rev in self.review_set.all():
+            total = total + rev.karma
+        return total
 
 class Game(models.Model):
     title = models.CharField(max_length=50)
@@ -51,7 +59,7 @@ class Game(models.Model):
 
 class Review(models.Model):
     title = models.CharField(max_length=100)
-    body = models.CharField(max_length=5000)    # is this long enough?
+    body = models.CharField(max_length=5000)    # is this long enough? yes
     author_id = models.ForeignKey(User)
     game_id = models.ForeignKey(Game)
     pub_date = DateTimeField()
@@ -60,3 +68,16 @@ class Review(models.Model):
 
     def __str__(self):
         return "{}... by {}".format(self.title[:15], self.author_id)
+
+
+"""
+Comments on reviews...and perhaps more.
+"""
+class Comment(models.Model):
+    body = models.Charfield(max_length=1000) #Same length as last.fm comments
+    user_id = models.ForeignKey(User)
+    review_id = models.ForeignKey(Review)
+    timestamp = DateTimeField()
+
+    def __str__(self)
+        return "{}... by {}".format(self.body[:10], self.user_id)

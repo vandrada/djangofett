@@ -21,7 +21,8 @@ Interesting Python modules
 
 Current project layout (models):
 
-Review Comment
+#One thing to note: We need to implement the report-counts somehow as well.
+Review Comment [Check]
 --------------
 UserId
 reviewId
@@ -30,7 +31,7 @@ body
 timestamp
 
 
-Review
+Review [Check]
 ------
 karma
 authorId
