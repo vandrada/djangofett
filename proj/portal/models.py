@@ -37,6 +37,17 @@ class User(AuthUser):
     Currently extends from auth.models.User
     Required fields are username, email, password
     """
+    NOOB = 'NB'
+    SAMARITAN = 'SM'
+    PRO = 'PR'
+    GOAT = 'GT'
+    RANK_CHOICES = ((NOOB, "Noob"),
+                    (SAMARITAN, "Samaritan"),
+                    (PRO, "Professional"),
+                    (GOAT, "Greatest of all time"))
+
+    rank = models.CharField(max_length=2, choices=RANK_CHOICES, default=NOOB)
+
     def __str__(self):
         return self.username
 
