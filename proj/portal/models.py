@@ -36,8 +36,6 @@ class User(AuthUser):
     Currently extends from auth.models.User
     Required fields are username, email, password
     """
-    karma = models.IntegerField(default=0)
-
     def __str__(self):
         return self.username
 
