@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import DateTimeField
 from django.utils import timezone
 from django.contrib.auth.models import User as AuthUser
+from taggit.managers import TaggableManager
 
 import datetime
 
@@ -44,16 +45,16 @@ class User(AuthUser):
     """
     def get_karma(self):
         return sum([rev.karma for rev in self.review_set.all()])
-    
+
     """
     Get the user's report count from their reviews and comments
     """
     def get_report_count(self):
         report_count = 0
-        report_count += sum([rev.reported_count 
-                        for rev in self.review_set.all()])
+        report_count += sum([rev.reported_count
+                             for rev in self.review_set.all()])
         report_count += sum([com.reported_count
-                        for com in self.comment_set.all()])
+                             for com in self.comment_set.all()])
         return report_count
 
 
@@ -61,6 +62,7 @@ class Game(models.Model):
     title = models.CharField(max_length=50)
     publisher = models.CharField(max_length=100)
     release_date = DateTimeField("Game's release date")
+    tags = TaggableManager()
 
     def __str__(self):
         return self.title

@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'portal' #For home portal
+    'portal', #For home portal
+    'taggit'
 )
 
 MIDDLEWARE_CLASSES = (
