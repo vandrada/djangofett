@@ -44,6 +44,16 @@ class User(AuthUser):
     """
     def get_karma(self):
         return sum([rev.karma for rev in self.review_set.all()])
+    
+    """
+    Get the user's report count from their reviews and comments
+    """
+    def get_report_count(self):
+        report_count += sum([rev.reported_count 
+                        for rev in self.review_set.all()])
+        report_count += sum([com.reported_count
+                        for com in self.comment_set.all()])
+        return report_count
 
 
 class Game(models.Model):
@@ -76,6 +86,7 @@ class Comment(models.Model):
     user_id = models.ForeignKey(User)
     review_id = models.ForeignKey(Review)
     timestamp = DateTimeField()
+    reported_count = models.IntegerField(default=0)
 
     def __str__(self):
         return "{}... by {}".format(self.body[:10], self.user_id)
