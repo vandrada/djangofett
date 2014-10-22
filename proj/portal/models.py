@@ -43,10 +43,7 @@ class User(AuthUser):
     Add up all the karma from the user's reviews.
     """
     def get_karma(self):
-        total = 0
-        for rev in self.review_set.all():
-            total = total + rev.karma
-        return total
+        return sum([rev.karma for rev in self.review_set.all()])
 
 class Game(models.Model):
     title = models.CharField(max_length=50)
