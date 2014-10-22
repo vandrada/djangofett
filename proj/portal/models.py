@@ -47,3 +47,16 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Review(models.Model):
+    title = models.CharField(max_length=100)
+    body = models.CharField(max_length=5000)    # is this long enough?
+    author_id = models.ForeignKey(User)
+    game_id = models.ForeignKey(Game)
+    pub_date = DateTimeField()
+    karma = models.IntegerField(default=0)
+    reported_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{}... by {}".format(self.title[:15], self.author_id)
