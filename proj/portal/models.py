@@ -71,7 +71,7 @@ class Review(models.Model):
 Comments on reviews...and perhaps more.
 """
 class Comment(models.Model):
-    body = models.Charfield(max_length=1000) #Same length as last.fm comments
+    body = models.CharField(max_length=1000) #Same length as last.fm comments
     user_id = models.ForeignKey(User)
     review_id = models.ForeignKey(Review)
     timestamp = DateTimeField()
