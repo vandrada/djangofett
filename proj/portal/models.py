@@ -76,5 +76,5 @@ class Comment(models.Model):
     review_id = models.ForeignKey(Review)
     timestamp = DateTimeField()
 
-    def __str__(self)
+    def __str__(self):
         return "{}... by {}".format(self.body[:10], self.user_id)
