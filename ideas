@@ -42,25 +42,25 @@ timestamp(s)
 reportedCount
 
 
-User (admin extends this!)
+User [Check] (admin extends this!)
 ----
 username
 email
 pasword
 id
 
-Polls
+Polls [Check]
 -----
 Question
 id
 
 
-Answers
+Answers [Check]
 -------
 ID
 vote_count
 
-Game
+Game [Check]
 ----
 Title
 id
