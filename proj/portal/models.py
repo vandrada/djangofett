@@ -49,6 +49,7 @@ class User(AuthUser):
     Get the user's report count from their reviews and comments
     """
     def get_report_count(self):
+        report_count = 0
         report_count += sum([rev.reported_count 
                         for rev in self.review_set.all()])
         report_count += sum([com.reported_count
