@@ -2,21 +2,19 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import taggit.managers
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('taggit', '0001_initial'),
-        ('portal', '0006_comment'),
+        ('portal', '0017_remove_game_image'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='game',
-            name='tags',
-            field=taggit.managers.TaggableManager(to='taggit.Tag', through='taggit.TaggedItem', help_text='A comma-separated list of tags.', verbose_name='Tags'),
+            name='image',
+            field=models.ImageField(null=True, upload_to=b'games/'),
             preserve_default=True,
         ),
     ]

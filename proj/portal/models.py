@@ -74,6 +74,7 @@ class Game(models.Model):
     publisher = models.CharField(max_length=100)
     release_date = DateTimeField("Game's release date")
     tags = TaggableManager()
+    image = models.ImageField(upload_to='games', null=True)
 
     def __str__(self):
         return self.title
