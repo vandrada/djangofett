@@ -37,7 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portal', #For home portal
-    'taggit'
+    'taggit',
+    'fettdb',
 )
 
 MIDDLEWARE_CLASSES = (
