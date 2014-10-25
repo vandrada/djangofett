@@ -1,0 +1,21 @@
+{% extends "portal/base.html" %}
+
+{% block title %} {{ game.title }} {% endblock %}
+{% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
+{% block content %}
+    {% if game %}
+    <div class="jumbotron">
+        <div id="animate-area"></div>
+    </div>
+
+    <div class="page-header">
+        <h1> {{ game.title }} </h1>
+        <h2> <small> {{ game.tags.all|join:", " }} </small></h2>
+        <h3> <small> Publisher: {{ game.publisher }}</small></h3>
+        <h3><small> Release date: {{ game.release_date }} </small></h3>
+    </div>
+    {% else %}
+    <h1> Title? </h1>
+    {% endif %}
+
+{% endblock %}
