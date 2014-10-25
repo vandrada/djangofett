@@ -9,13 +9,39 @@
     </div>
 
     <div class="page-header">
-        <h1> {{ game.title }} </h1>
-        <h2> <small> {{ game.tags.all|join:", " }} </small></h2>
+        <h1> {{ game.title }} <small> {{ game.tags.all|join:", "}} </h1>
         <h3> <small> Publisher: {{ game.publisher }}</small></h3>
-        <h3><small> Release date: {{ game.release_date }} </small></h3>
+        <h3><small> Release date: {{ game.release_date|date }} </small></h3>
     </div>
+
+    <ul class="list-group">
+        {% for rev in game.review_set.all %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+              <h3 class="panel-title">{{ rev.title }} by {{ rev.author_id }}
+                  <span class="badge"> {{ rev.karma }}</span>
+             </h3>
+              {{ rev.pub_date|date }}
+          </div>
+          <div class="panel-body">
+            {{ rev.body }}
+          </div>
+              <div class="btn-group-sm">
+                  <button type="button" class="btn btn-default">
+                      <span class="glyphicon glyphicon-usd"</span>
+                  </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
+              </div>
+        </div>
+        {% endfor %}
+    </ul>
     {% else %}
-    <h1> Title? </h1>
+        <h1> Title? </h1>
     {% endif %}
 
 {% endblock %}
