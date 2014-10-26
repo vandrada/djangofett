@@ -90,7 +90,7 @@ class Review(models.Model):
     reported_count = models.IntegerField(default=0)
 
     def __str__(self):
-        return "{}... by {}".format(self.title[:15], self.author_id)
+        return "{}... by {}".format(self.title[:10], self.author_id)
 
 
 class Comment(models.Model):
