@@ -19,7 +19,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
               <h3 class="panel-title">{{ rev.title }} by {{ rev.author_id }}
-                  <span class="badge"> {{ rev.karma }}</span>
+                  <span class="badge" title="karma points"> {{ rev.karma }}</span>
              </h3>
               {{ rev.pub_date|date }}
           </div>
@@ -27,13 +27,13 @@
             {{ rev.body }}
           </div>
               <div class="btn-group-sm">
-                  <button type="button" class="btn btn-default">
+                  <button type="button" class="btn btn-default" title="give karma">
                       <span class="glyphicon glyphicon-usd"</span>
                   </button>
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default" title="add comment">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                 </button>
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default" title="report">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
               </div>
