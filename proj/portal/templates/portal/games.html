@@ -9,17 +9,21 @@
     </div>
 
     <div class="page-header">
-        <h1> {{ game.title }} <small> {{ game.tags.all|join:", "}} </h1>
+        <!-- Game details -->
+        <h1> {{ game.title }} </h1>
+        <h2> <small> {{ game.tags.all|join:", " }} </h2>
         <h3> <small> Publisher: {{ game.publisher }}</small></h3>
         <h3><small> Release date: {{ game.release_date|date }} </small></h3>
     </div>
 
+    <!-- Game reviews -->
     <ul class="list-group">
         {% for rev in game.review_set.all %}
         <div class="panel panel-default">
           <div class="panel-heading">
               <h3 class="panel-title">{{ rev.title }} by {{ rev.author_id }}
-                  <span class="badge" title="karma points"> {{ rev.karma }}</span>
+                  <span class="label label-success" title="karma points"> {{ rev.karma }}</span>
+                  <span class="label label-danger" title="reports"> {{ rev.reported_count }} </span>
              </h3>
               {{ rev.pub_date|date }}
           </div>
