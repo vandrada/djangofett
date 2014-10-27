@@ -11,6 +11,7 @@ UTSA User Interfaces Fall 2014
 * Django
 * Pillow
 * django-taggit
+* django-mathfilters
 
 ## Links:
 * [Slack](https://utsaui.slack.com/)
