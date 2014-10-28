@@ -13,6 +13,8 @@ UTSA User Interfaces Fall 2014
 * django-taggit
 * django-mathfilters
 
+To install the dependencies run `pip install -r requirements.txt`
+
 ## Links:
 * [Slack](https://utsaui.slack.com/)
 * [Final Group Project Descriptions](https://www.dropbox.com/sh/gj9tzr34mvatuqq/AAA3o8PiI0fFkXSKh4frk-kYa/Final%20Project%20Descriptions.pdf?dl=0)
