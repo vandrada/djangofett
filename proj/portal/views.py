@@ -29,3 +29,8 @@ def review():
 def user():
     # TODO
     pass
+
+
+def vote(request, question_id):
+    context = {'question': Question.objects.get(id=question_id)}
+    return render(request, 'portal/vote.html', context)

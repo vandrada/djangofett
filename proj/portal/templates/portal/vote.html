@@ -1,0 +1,15 @@
+{% extends "portal/base.html" %}
+{% block content %}
+  <div class="jumbotron">
+    <h1> {{ question.question_text }}</h1>
+  </div>
+
+<!-- Answers -->
+  <ul class="list-group">
+  {% for answer in question.answer_set.all %}
+  <li class="list-group-item"><a href="#">{{ answer.answer_text }}
+    <span class="badge">{{ answer.vote_count }}</span></a>
+  </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

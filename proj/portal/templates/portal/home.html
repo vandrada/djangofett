@@ -1,5 +1,6 @@
 {% extends "portal/base.html" %}
 {% load mathfilters %}
+
 <!-- Expects question and recent reviews -->
 {% block title %} DjangoFett {% endblock %}
 {% block content %}
@@ -8,24 +9,30 @@
       <h1>{{ question.question_text }}</h1>
       {% for answer in question.answer_set.all %}
         <div class="btn-group">
-          <a class="btn btn-primary btn-lg" role="button"> {{ answer.answer_text }}</a>
+          <form action={% url 'portal.views.vote' question.id %}>
+            <button class="btn btn-primary btn-lg" id="vote_btn" role="button">
+            {{ answer.answer_text }} </button>
+        </form>
         </div>
       {% endfor %}
     </div>
 
     <!-- recent reviews -->
-    <h3>Reviews  <span class="label label-default left">Recent</span></h3>
-    <div class="media">
-    {% for rev in reviews %}
-      <a class="pull-left" href="#">
-        <img class="media-object" src="{{ MEDIA_URL }}{{ rev.game_id.image }}"
-            width="{{ rev.game_id.image.width|div:2 }}" height="{{ rev.game_id.image.height|div:2 }}" alt="..."
-            title="{{ rev.game_id.title }}">
-      </a>
-      <div class="media-body">
-        <h4 class="media-heading">{{ rev.title }}</h4>
-        {{ rev.body }}
+    <div class="container">
+      <h3>Reviews  <span class="label label-default left">Recent</span></h3>
+      <div class="media">
+      {% for rev in reviews %}
+        <a class="pull-left" href="#">
+          <img class="media-object" src="{{ MEDIA_URL }}{{ rev.game_id.image }}"
+              width="{{ rev.game_id.image.width|div:2 }}" height="{{ rev.game_id.image.height|div:2 }}" alt="..."
+              title="{{ rev.game_id.title }}">
+        </a>
+        <div class="media-body">
+          <!-- TODO change link to review once review view is done -->
+          <h4 class="media-heading"> <a href={% url 'portal.views.game' rev.game_id.id %}>{{ rev.title }}</a></h4>
+          {{ rev.body }}
+        </div>
       </div>
-    </div>
     {% endfor %}
+    </div>
 {% endblock %}
