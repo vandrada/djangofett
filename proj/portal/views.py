@@ -21,8 +21,9 @@ def home(request):
     return render(request, 'portal/home.html', context)
 
 
-def review():
-    # TODO
+def review(request, review_id):
+    context = {'review': Review.objects.get(id=review_id)}
+    return render(request, 'portal/review.html', context)
     pass
 
 
