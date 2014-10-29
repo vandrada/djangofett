@@ -17,30 +17,21 @@
     </div>
 
     <!-- Game reviews -->
+    <div class="page-header"><h2>Reviews</h2></div>
     <ul class="list-group">
         {% for rev in game.review_set.all %}
         <div class="panel panel-default">
           <div class="panel-heading">
-              <h3 class="panel-title">{{ rev.title }} by {{ rev.author_id }}
+            <h3 class="panel-title"><a href={% url 'portal.views.review' rev.id %}>
+                {{ rev.title }}</a> by {{ rev.author_id }}
                   <span class="label label-success" title="karma points"> {{ rev.karma }}</span>
                   <span class="label label-danger" title="reports"> {{ rev.reported_count }} </span>
              </h3>
               {{ rev.pub_date|date }}
           </div>
           <div class="panel-body">
-            {{ rev.body }}
+            {{ rev.preview }}
           </div>
-              <div class="btn-group-sm">
-                  <button type="button" class="btn btn-default" title="give karma">
-                      <span class="glyphicon glyphicon-usd"</span>
-                  </button>
-                <button type="button" class="btn btn-default" title="add comment">
-                    <span class="glyphicon glyphicon-plus-sign"></span>
-                </button>
-                <button type="button" class="btn btn-default" title="report">
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                </button>
-              </div>
         </div>
         {% endfor %}
     </ul>
