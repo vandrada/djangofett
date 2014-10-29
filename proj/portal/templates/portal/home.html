@@ -18,20 +18,21 @@
     </div>
 
     <!-- recent reviews -->
-    <div class="container">
+    <div class="page-header">
       <h3>Reviews  <span class="label label-default left">Recent</span></h3>
-      <div class="media">
-      {% for rev in reviews %}
-        <a class="pull-left" href="#">
+    </div>
+    <ul class="media-list">
+    {% for rev in reviews %}
+      <li class="media">
+        <a class="pull-left" href={% url 'portal.views.game' rev.game_id.id %}>
           <img class="media-object" src="{{ MEDIA_URL}}{{rev.game_id.image}}" width="104" height="120"
             title="{{ rev.game_id.title }}">
         </a>
         <div class="media-body">
-          <!-- TODO change link to review once review view is done -->
-          <h4 class="media-heading"> <a href={% url 'portal.views.game' rev.game_id.id %}>{{ rev.title }}</a></h4>
+          <h4 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a></h4>
           {{ rev.preview }}
         </div>
-      </div>
+      </li>
     {% endfor %}
-    </div>
+    </ul>
 {% endblock %}
