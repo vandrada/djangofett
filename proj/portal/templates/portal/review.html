@@ -1,0 +1,30 @@
+{% extends "portal/base.html" %}
+<!-- expects a review -->
+{% block title %} {{ review.title }} {% endblock %}
+{% block content %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ review.title }} by {{ review.author_id }}
+        <span class="label label-success" title="karma points"> {{ review.karma }}</span>
+        <span class="label label-danger" title="reports"> {{ review.reported_count }} </span>
+     </h3>
+      {{ review.pub_date|date }}
+    </div>
+    <div class="panel-body">
+      {{ review.body }}
+    </div>
+    <div class="panel-footer">
+      <div class="btn-group-sm">
+        <button type="button" class="btn btn-default" title="give karma">
+          <span class="glyphicon glyphicon-usd"</span>
+        </button>
+        <button type="button" class="btn btn-default" title="add comment">
+          <span class="glyphicon glyphicon-plus-sign"></span>
+        </button>
+        <button type="button" class="btn btn-default" title="report">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
