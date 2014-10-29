@@ -38,7 +38,7 @@
             to { background-position:  100% 0; }
         }
         #animate-area {
-            width: 990px;
+            width: 820px;
             height: 200px;
             background-image: url({% block image %}' ' {% endblock %});
             background-position: 0px 0px;
@@ -95,9 +95,11 @@
     </div><!-- /.container-fluid -->
   </nav>
 
+  <div class="container">
   {% block content %}
     <!-- Content here -->
   {% endblock %}
+  </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
