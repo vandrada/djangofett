@@ -89,6 +89,9 @@ class Review(models.Model):
     karma = models.IntegerField(default=0)
     reported_count = models.IntegerField(default=0)
 
+    def preview(self):
+        return self.body[:50] + "..."
+
     def __str__(self):
         return "{}... by {}".format(self.title[:10], self.author_id)
 

@@ -11,6 +11,9 @@ UTSA User Interfaces Fall 2014
 * Django
 * Pillow
 * django-taggit
+* django-mathfilters
+
+To install the dependencies run `pip install -r requirements.txt`
 
 ## Links:
 * [Slack](https://utsaui.slack.com/)

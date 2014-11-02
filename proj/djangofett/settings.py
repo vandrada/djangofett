@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'portal', #For home portal
     'taggit',
     'fettdb',
+    'mathfilters',
 )
 
 MIDDLEWARE_CLASSES = (
