@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^hello/', views.hello, name='fettdb_helloworld'),
     url(r'^base/', views.base, name='fettdb_base'),
     url(r'^game/list/', views.gamelist, name='fettdb_gamedetail'),
+    url(r'^placeholder/', views.placeholder, name='fettdb_placeholder'),
 )

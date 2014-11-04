@@ -11,3 +11,6 @@ def base(request):
 
 def gamelist(request):
    return render(request, 'gamelist.html')
+
+def placeholder(request):
+   return render(request, 'placeholder.html', {'request':request})

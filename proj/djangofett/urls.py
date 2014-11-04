@@ -9,9 +9,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'djangofett.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'', home),
+    #url(r'^$', home),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^fettdb/', include('fettdb.urls')),
-    url(r'^djangofett/', include('portal.urls')),
     url(r'^userctrl/', include('portal.urls')),
+    url(r'^djangofett/', include('portal.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
