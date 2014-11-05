@@ -34,9 +34,7 @@ def user():
     pass
 
 
-def vote(request, question_id, answer_id):
-    answer = Answer.objects.get(id=answer_id)
-    answer.inc()
+def vote(request, question_id):
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
 

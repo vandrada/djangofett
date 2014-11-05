@@ -9,9 +9,9 @@
       <h1>{{ question.question_text }}</h1>
       {% for answer in question.answer_set.all %}
         <div class="btn-group">
-          <form action={% url 'portal.views.vote' question.id answer.id %}>
-            <button class="btn btn-primary btn-lg" id="vote_btn" role="button">
-            {{ answer.answer_text }} </button>
+          <form action={% url 'portal.views.vote' question.id %}>
+            <button class="btn btn-primary btn-lg" id="vote_btn" role="button" action="{{answer.inc|urlencode:''}}">
+              {{ answer.answer_text }} </button>
         </form>
         </div>
       {% endfor %}
