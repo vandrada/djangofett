@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
-from portal.models import Game, Question, Review
+from portal.models import Game, Question, Review, Answer
 import random
 import datetime
 from django.utils import timezone
@@ -34,7 +34,9 @@ def user():
     pass
 
 
-def vote(request, question_id):
+def vote(request, question_id, answer_id):
+    answer = Answer.objects.get(id=answer_id)
+    answer.inc()
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
 

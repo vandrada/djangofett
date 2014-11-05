@@ -28,6 +28,10 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     vote_count = models.IntegerField(default=0)
 
+    def inc(self):
+        self.vote_count += 1
+        self.save()
+
     def __str__(self):
         return "{}:{}".format(self.answer_text, self.vote_count)
 
