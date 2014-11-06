@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from portal.models import Review
-from pagedown.widgets import PageDownWidget
+from pagedown.widgets import PagedownWidget
 
 """
 This form is derived from 'Review', since that model has all the fields
@@ -10,4 +10,4 @@ class ReviewForm(ModelForm):
     class Meta:
         model = Review
         fields = ['title', 'body']
-        widgets = {'body': PageDownWidget()}
+        widgets = {'body': PagedownWidget()}

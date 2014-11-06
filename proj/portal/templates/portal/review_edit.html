@@ -1,6 +1,8 @@
 <!--Simply display a review page with a review form and submit buttons.-->
+<!-- NOTE: Doesn't display anything for some reason? Investigate...-->
 {% extends "base.html" %} 
-<!--   {% block title %} {{ review.title }}
-   {% form %}
-   {% for rev in review.objects.all %}
-   {% endfor %} -->
+<form action={% url 'review_edit' form.Meta.model.id %} method="post">
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="Submit" />
+</form>

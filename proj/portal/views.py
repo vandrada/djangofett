@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer
+from portal.forms import ReviewForm
 import random
 import datetime
 from django.utils import timezone
@@ -42,8 +43,16 @@ def review_karma(request, review_id):
     return render(request, 'portal/review_karma.html', context)
 
 def review_edit(request, review_id):
-    pass #Still trying to decide what this should do exactly
-
+    #Fill up the form with the submitted data
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            #TODO: Save cleaned up data to review object.
+            return HttpResponseRedirect('/submit_success/')
+    #Create an empty form if 'GET' was used instead.
+    else:
+        form = ReviewForm()
+    return render(request, 'portal/review_edit.html', {'form': form})
 
 def user():
     # TODO
