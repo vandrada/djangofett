@@ -17,7 +17,10 @@
     </div>
 
     <!-- Game reviews -->
-    <div class="page-header"><h2>Reviews</h2></div>
+    <div class="page-header">
+      <h2>Reviews<span class="badge pull-right">{{ game.review_set.count }}</span></h2>
+      </h2>
+    </div>
     <ul class="list-group">
     {% for rev in game.review_set.all %}
       <div class="panel panel-default">
