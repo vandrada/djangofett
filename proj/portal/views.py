@@ -80,6 +80,7 @@ def vote(request, question_id, answer_id):
         p.save()
         #PollResponse.objects.create(question=question, user=request.user)
         print("Voted")
+    #else: NOTE: Have message like "A vote from this user has already been registered"
     context = {'question': question}
     return render(request, 'portal/vote.html', context)
 
