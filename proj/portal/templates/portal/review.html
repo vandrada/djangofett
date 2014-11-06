@@ -14,16 +14,19 @@
       {{ review.body }}
     </div>
     <div class="panel-footer">
-      <div class="btn-group-sm">
+      <div class="btn-group">
         <form action={% url 'portal.views.review_karma' review.id %} method="post">
           {% csrf_token %}
           <button class="btn btn-default" title="give karma">
             <span class="glyphicon glyphicon-usd"</span>
           </button>
         </form>
-        <button class="btn btn-default" title="add comment">
-          <span class="glyphicon glyphicon-plus-sign"></span>
-        </button>
+        <form>
+          <!-- TODO add ability to post a comment -->
+          <button class="btn btn-default" title="add comment">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+        </form>
         <form action={% url 'portal.views.review_report' review.id %} method="post">
           {% csrf_token %}
           <button class="btn btn-default" title="report">
