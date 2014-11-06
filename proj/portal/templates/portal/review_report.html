@@ -24,24 +24,22 @@
     </div>
     <div class="panel-footer">
       <div class="btn-group">
-        <form>
-          {% csrf_token %}
+        <p>
           <button class="btn btn-default" title="give karma">
             <span class="glyphicon glyphicon-usd"</span>
           </button>
-        </form>
-        <form>
+        </p>
+        <p>
           <!-- TODO add ability to post a comment -->
           <button class="btn btn-default" title="add comment">
             <span class="glyphicon glyphicon-plus-sign"></span>
           </button>
-        </form>
-        <form>
-          {% csrf_token %}
-          <button class="btn btn-default" title="report">
+        </p>
+        <p>
+          <button class="btn btn-default disabled" title="report">
             <span class="glyphicon glyphicon-remove-circle"></span>
           </button>
-          </form>
+        </p>
       </div>
     </div>
   </div>
