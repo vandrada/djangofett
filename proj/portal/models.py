@@ -97,6 +97,10 @@ class Review(models.Model):
         self.reported_count += 1
         self.save()
 
+    def inc_karma(self):
+        self.karma += 1
+        self.save()
+
     def preview(self):
         return self.body[:50] + "..."
 

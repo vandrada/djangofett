@@ -35,6 +35,13 @@ def review_report(request, review_id):
     return render(request, 'portal/review_report.html', context)
 
 
+def review_karma(request, review_id):
+    review = Review.objects.get(id=review_id)
+    review.inc_karma()
+    context = {'review': Review.objects.get(id=review_id)}
+    return render(request, 'portal/review_karma.html', context)
+
+
 def user():
     # TODO
     pass
