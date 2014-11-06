@@ -2,31 +2,52 @@
 <!-- expects a review -->
 {% block title %} {{ review.title }} {% endblock %}
 {% block content %}
+  <div class="page-header">
+    <div class="media">
+      <a class="pull-right" href={% url 'portal.views.game' review.game_id.id %}>
+      <img src="{{MEDIA_URL}}{{review.game_id.image}}" width="209" height="241" alt="...">
+    </a>
+    <h1>{{review.title}} by {{ review.author_id }}</h1>
+    <h3>
+      {{ review.pub_date|date }}
+    </h3>
+    <h2>
+      <span class="label label-success" title="karma points"> {{ review.karma }}</span>
+      <span class="label label-danger" title="reports"> {{ review.reported_count }} </span>
+      </h2>
+  </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">{{ review.title }} by {{ review.author_id }}
-        <span class="label label-success" title="karma points"> {{ review.karma }}</span>
-        <span class="label label-danger" title="reports"> {{ review.reported_count }} </span>
-     </h3>
-      {{ review.pub_date|date }}
     </div>
     <div class="panel-body">
       {{ review.body }}
     </div>
     <div class="panel-footer">
-      <div class="btn-group-sm">
-        <button class="btn btn-default" title="give karma">
-          <span class="glyphicon glyphicon-usd"</span>
-        </button>
-        <button class="btn btn-default" title="add comment">
-          <span class="glyphicon glyphicon-plus-sign"></span>
-        </button>
-        <form action={% url 'portal.views.review_report' review.id %} method="post">
-          {% csrf_token %}
-          <button class="btn btn-default" title="report">
-            <span class="glyphicon glyphicon-remove-circle"></span>
-          </button>
-        </form>
+      <div class="btn-group">
+        <p>
+          <form action={% url 'portal.views.review_karma' review.id %} method="post">
+            {% csrf_token %}
+            <button class="btn btn-default" title="give karma">
+              <span class="glyphicon glyphicon-usd"</span>
+            </button>
+          </form>
+        </p>
+        <p>
+          <form>
+            <!-- TODO add ability to post a comment -->
+            <button class="btn btn-default" title="add comment">
+              <span class="glyphicon glyphicon-plus-sign"></span>
+            </button>
+          </form>
+        </p>
+        <p>
+          <form action={% url 'portal.views.review_report' review.id %} method="post">
+            {% csrf_token %}
+            <button class="btn btn-default" title="report">
+              <span class="glyphicon glyphicon-remove-circle"></span>
+            </button>
+            </form>
+        </p>
       </div>
     </div>
   </div>

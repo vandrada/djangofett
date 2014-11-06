@@ -10,14 +10,20 @@
 
     <div class="page-header">
         <!-- Game details -->
-        <h1> {{ game.title }} </h1>
+        <h1>{{ game.title }}</h1>
+        <!-- TODO make these tags links-->
         <h2> <small> {{ game.tags.all|join:", " }} </h2>
         <h3> <small> Publisher: {{ game.publisher }}</small></h3>
         <h3><small> Release date: {{ game.release_date|date }} </small></h3>
+        <!-- TODO link to write a review page-->
+        <a class="btn btn-primary btn-lg" role="button">Write a Review</a>
     </div>
 
     <!-- Game reviews -->
-    <div class="page-header"><h2>Reviews</h2></div>
+    <div class="page-header">
+      <h2>Reviews<span class="badge pull-right">{{ game.review_set.count }}</span></h2>
+      </h2>
+    </div>
     <ul class="list-group">
     {% for rev in game.review_set.all %}
       <div class="panel panel-default">
@@ -32,7 +38,7 @@
         <div class="panel-body">
           {{ rev.preview }}
         </div>
-    </div>
+      </div>
     {% endfor %}
     </ul>
     {% else %}
