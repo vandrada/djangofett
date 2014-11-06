@@ -17,9 +17,10 @@ urlpatterns = patterns('',
         name='review_karma'),
     url(r'^review/(?P<review_id>\d+)/edit$', views.review_edit,
                 name='review_edit'),
-    url(r'^platform/(?P<platform_id>\d+)/$', views.game_list, name='game_list'),
+    # Game List/Search
+    url(r'^listgames/(?P<platform_id>\w+)/$', views.game_list, name='game_list'),
     # For User Control
-    url(r'^doreg/', views.userctrl_doreg, name='usr_reg'),
-    url(r'^login/', views.userctrl_login, name='usr_login'),
-    url(r'^logout/', views.userctrl_logout, name='usr_logout'),
+    url(r'^userctrl/doreg/', views.userctrl_doreg, name='usr_reg'),
+    url(r'^userctrl/login/', views.userctrl_login, name='usr_login'),
+    url(r'^userctrl/logout/', views.userctrl_logout, name='usr_logout'),
 )
