@@ -73,21 +73,24 @@
          <div class="collapse navbar-collapse">
             <!-- Left hand side -->
             <ul class="nav navbar-nav">
-               <li><a href="/djangofett/platform/0">PC</a></li>
-               <li><a href="/djangofett/platform/1">Xbox One</a></li>
-               <li><a href="/djangofett/platform/2">PS4</a></li>
-               <li><a href="/djangofett/platform/3">Wii U</a></li>
-               <li><a href="/djangofett/platform/4">Mobile</a></li>
+               <li><a href="/djangofett/listgames/pc">PC</a></li>
+               <li><a href="/djangofett/listgames/xbone">Xbox One</a></li>
+               <li><a href="/djangofett/listgames/xb360">Xbox 360</a></li>
+               <li><a href="/djangofett/listgames/ps4">PS4</a></li>
+               <li><a href="/djangofett/listgames/ps3">PS3</a></li>
+               <li><a href="/djangofett/listgames/wiiu">Wii U</a></li>
+               <li><a href="/djangofett/listgames/mobile">Mobile</a></li>
             </ul>
 
             <!-- Search Bar -->
             <p class="navbar-text sr-only">Search</p>
-            <form class="navbar-form navbar-left" role="form">
+            <form class="navbar-form navbar-left" action="/djangofett/listgames/search/" method="post" role="form">
+               {% csrf_token %}
                <div class="form-group">
                   <div class="input-group">
-                     <input type="text" class="form-control input-sm" placeholder="Search...">
+                     <input type="text" class="form-control input-sm" name="search_query" placeholder="Search...">
                      <span class="input-group-btn">
-                        <button class="btn btn-sm btn-primary" type="button">Search</button>
+                        <button class="btn btn-sm btn-primary" type="submit">Search</button>
                      </span>
                   </div>
                </div>
@@ -103,7 +106,7 @@
                      <li><a href="#">Profile</a></li>
                      <li><a href="#">Reviews</a></li>
                      <li class="divider"></li>
-                     <li><a href="/userctrl/logout">Log Out</a></li>
+                     <li><a href="/djangofett/userctrl/logout">Log Out</a></li>
                   </ul>
                </li>
             </ul> 
@@ -114,7 +117,7 @@
                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In</a>
                   <div class="dropdown-menu" role="menu" style="padding: 15px; padding-bottom:0px;">
-                     <form role="form" action="/userctrl/login/" method="post">
+                     <form role="form" action="/djangofett/userctrl/login/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
                            <input type="text" class="form-control" id="inpUsername" name="login_un" placeholder="Username">
@@ -132,7 +135,7 @@
                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Register</a>
                   <div class="dropdown-menu" role="menu" style="padding: 15px; padding-bottom:0px;">
-                     <form role="form" action="/userctrl/doreg/" method="post">
+                     <form role="form" action="/djangofett/userctrl/doreg/" method="post">
                         {% csrf_token %} 
                         <div class="form-group">
                            <input type="text" class="form-control" id="inpUsername" name="reg_un" placeholder="Username">
