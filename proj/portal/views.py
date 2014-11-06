@@ -46,7 +46,6 @@ def review_karma(request, review_id):
 
 def review_edit(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
@@ -54,14 +53,17 @@ def review_edit(request, review_id):
             review = form.save(commit=False)
             review.pub_date = timezone.now()
             review.save()
-            return HttpResponseRedirect('/djangofett/home') #TODO: Make this a thank you page.
-    #Create an empty form if 'GET' was used instead.
-    else:
+            return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))    
+    #Create an empty form if 'GET' was used instead. Prevent unauthorized
+    #review modifications.
+    elif request.user == review.author_id:
         form = ReviewForm(instance=review)
-    return render(request, 'portal/review_edit.html', {
-        'review': review,
-        'form' : form,
-    })
+        return render(request, 'portal/review_edit.html', {
+            'review': review,
+            'form' : form,
+        })
+    else:
+        return home(request) #Placeholder: tell the usr they can't do this.
 
 def user():
     # TODO
@@ -69,8 +71,9 @@ def user():
 
 
 def vote(request, question_id, answer_id):
-    answer = Answer.objects.get(id=answer_id)
-    answer.inc()
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user.is_authenticated() and answer not in request.user.answer_set.all():
+        answer.inc()
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
 
