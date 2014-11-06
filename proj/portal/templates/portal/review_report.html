@@ -2,6 +2,8 @@
 <!-- expects a review -->
 {% block title %} {{ review.title }} {% endblock %}
 {% block content %}
+<!-- Almost the same thing as the plain review.html, but the forms have been
+  removed -->
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">{{ review.title }} by {{ review.author_id }}
@@ -15,18 +17,15 @@
     </div>
     <div class="panel-footer">
       <div class="btn-group-sm">
-        <button class="btn btn-default" title="give karma">
+        <button type="button" class="btn btn-default" title="give karma">
           <span class="glyphicon glyphicon-usd"</span>
         </button>
-        <button class="btn btn-default" title="add comment">
+        <button type="button" class="btn btn-default" title="add comment">
           <span class="glyphicon glyphicon-plus-sign"></span>
         </button>
-        <form action={% url 'portal.views.review_report' review.id %} method="post">
-          {% csrf_token %}
-          <button class="btn btn-default" title="report">
+          <button type="button" class="btn btn-default" title="report">
             <span class="glyphicon glyphicon-remove-circle"></span>
           </button>
-        </form>
       </div>
     </div>
   </div>

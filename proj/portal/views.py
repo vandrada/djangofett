@@ -26,7 +26,13 @@ def home(request):
 def review(request, review_id):
     context = {'review': Review.objects.get(id=review_id)}
     return render(request, 'portal/review.html', context)
-    pass
+
+
+def review_report(request, review_id):
+    review = Review.objects.get(id=review_id)
+    review.inc_reports()
+    context = {'review': Review.objects.get(id=review_id)}
+    return render(request, 'portal/review_report.html', context)
 
 
 def user():
@@ -34,9 +40,19 @@ def user():
     pass
 
 
-def vote(request, question_id):
+def vote(request, question_id, answer_id):
+    answer = Answer.objects.get(id=answer_id)
+    answer.inc()
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
+
+
+def result(request, question_id):
+    """
+    Just the results...no votes
+    """
+    context = {'question': Question.objects.get(id=question_id)}
+    return render(request, 'portal/result.html', context)
 
 #----------------------------
 #-------- PLATFORM LIST VIEWS

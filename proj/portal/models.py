@@ -93,6 +93,10 @@ class Review(models.Model):
     karma = models.IntegerField(default=0)
     reported_count = models.IntegerField(default=0)
 
+    def inc_reports(self):
+        self.reported_count += 1
+        self.save()
+
     def preview(self):
         return self.body[:50] + "..."
 
