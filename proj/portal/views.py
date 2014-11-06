@@ -41,6 +41,9 @@ def review_karma(request, review_id):
     context = {'review': Review.objects.get(id=review_id)}
     return render(request, 'portal/review_karma.html', context)
 
+def review_edit(request, review_id):
+    pass #Still trying to decide what this should do exactly
+
 
 def user():
     # TODO
