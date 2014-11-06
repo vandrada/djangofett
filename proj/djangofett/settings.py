@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'taggit',
     'fettdb',
     'mathfilters',
+    'pagedown', #For markdown editor
 )
 
 MIDDLEWARE_CLASSES = (

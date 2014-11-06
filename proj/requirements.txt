@@ -2,3 +2,4 @@ Django==1.7
 Pillow==2.6.1
 django-mathfilters==0.3.0
 django-taggit==0.12.2
+django-pagedown==0.1.0

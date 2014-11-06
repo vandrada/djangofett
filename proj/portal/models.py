@@ -28,6 +28,10 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     vote_count = models.IntegerField(default=0)
 
+    def inc(self):
+        self.vote_count += 1
+        self.save()
+
     def __str__(self):
         return "{}:{}".format(self.answer_text, self.vote_count)
 
@@ -88,6 +92,10 @@ class Review(models.Model):
     pub_date = DateTimeField()
     karma = models.IntegerField(default=0)
     reported_count = models.IntegerField(default=0)
+
+    def inc_reports(self):
+        self.reported_count += 1
+        self.save()
 
     def preview(self):
         return self.body[:50] + "..."
