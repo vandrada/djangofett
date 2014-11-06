@@ -4,7 +4,7 @@
 {% block content %}
   <div class="page-header">
     <div class="media">
-    <a class="pull-right" href="#">
+    <a class="pull-right" href={% url 'portal.views.game' review.game_id.id %}>
       <img src="{{MEDIA_URL}}{{review.game_id.image}}" width="209" height="241" alt="...">
     </a>
     <h1>{{review.title}} by {{ review.author_id }}</h1>
