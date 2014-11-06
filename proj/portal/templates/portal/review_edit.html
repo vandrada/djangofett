@@ -1,6 +1,12 @@
 <!--Simply display a review page with a review form and submit buttons.-->
-{% extends "base.html" %} 
-<!--   {% block title %} {{ review.title }}
-   {% form %}
-   {% for rev in review.objects.all %}
-   {% endfor %} -->
+ {% extends "base.html" %} 
+   {% block content %}
+   <head>
+      {{ form.media }}
+   </head>
+   <form action={% url 'review_edit' review.id  %} method="post">
+   {% csrf_token %}
+   {{ form }}
+   <input type="submit" value="Submit" />
+   </form>
+   {% endblock %}

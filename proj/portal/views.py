@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer
+from portal.forms import ReviewForm
 import random
 import datetime
 from django.utils import timezone
+from django.http import HttpResponseRedirect
 from collections import namedtuple
+
 
 # Create your views here.
 def game(request, game_id):
@@ -42,8 +45,25 @@ def review_karma(request, review_id):
     return render(request, 'portal/review_karma.html', context)
 
 def review_edit(request, review_id):
-    pass #Still trying to decide what this should do exactly
-
+    review = get_object_or_404(Review, pk=review_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            #Save the data in the database as a Review object.
+            review = form.save(commit=False)
+            review.pub_date = timezone.now()
+            review.save()
+            return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))    
+    #Create an empty form if 'GET' was used instead. Prevent unauthorized
+    #review modifications.
+    elif request.user == review.author_id:
+        form = ReviewForm(instance=review)
+        return render(request, 'portal/review_edit.html', {
+            'review': review,
+            'form' : form,
+        })
+    else:
+        return home(request) #Placeholder: tell the usr they can't do this.
 
 def user():
     # TODO
@@ -51,8 +71,9 @@ def user():
 
 
 def vote(request, question_id, answer_id):
-    answer = Answer.objects.get(id=answer_id)
-    answer.inc()
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user.is_authenticated() and answer not in request.user.answer_set.all():
+        answer.inc()
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
 

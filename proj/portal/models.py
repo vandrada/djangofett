@@ -22,20 +22,6 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
-
-class Answer(models.Model):
-    answer_text = models.CharField(max_length=50, default="")
-    question = models.ForeignKey(Question)
-    vote_count = models.IntegerField(default=0)
-
-    def inc(self):
-        self.vote_count += 1
-        self.save()
-
-    def __str__(self):
-        return "{}:{}".format(self.answer_text, self.vote_count)
-
-
 class User(AuthUser):
     """
     Currently extends from auth.models.User
@@ -73,6 +59,21 @@ class User(AuthUser):
         return report_count
 
 
+class Answer(models.Model):
+    answer_text = models.CharField(max_length=50, default="")
+    question = models.ForeignKey(Question)
+    vote_count = models.IntegerField(default=0)
+    author = models.ForeignKey('auth.User')
+    def inc(self):
+        self.vote_count += 1
+        print(type(self.vote_count))
+        self.save()
+
+    def __str__(self):
+        return "{}:{}".format(self.answer_text, self.vote_count)
+
+
+    
 class Game(models.Model):
     title = models.CharField(max_length=50)
     publisher = models.CharField(max_length=100)
@@ -89,10 +90,10 @@ class Game(models.Model):
 
 class Review(models.Model):
     title = models.CharField(max_length=100)
-    body = models.CharField(max_length=5000)    # is this long enough? yes
-    author_id = models.ForeignKey(User)
-    game_id = models.ForeignKey(Game)
-    pub_date = DateTimeField()
+    body = models.TextField() 
+    author_id = models.ForeignKey('auth.User')
+    game_id = models.ForeignKey('Game')
+    pub_date = DateTimeField(default=timezone.now)
     karma = models.IntegerField(default=0)
     reported_count = models.IntegerField(default=0)
 
