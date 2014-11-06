@@ -53,7 +53,7 @@ def review_edit(request, review_id):
             review = form.save(commit=False)
             review.pub_date = timezone.now()
             review.save()
-            return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))    
+            return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))
     #Create an empty form if 'GET' was used instead. Prevent unauthorized
     #review modifications.
     elif request.user == review.author_id:
@@ -94,14 +94,14 @@ def game_list(request, platform_id):
       print("----- searching...")
       query = request.POST['search_query']
       query = query.strip()
-      
+
       if query == "":
          print("Empty query!")
          meta_mode = 2
       else:
          tokens = query.split()
          tags = {tag.strip("#") for tag in tokens if tag.startswith("#")}
-         
+
          print("-- Query: ")
          print(tokens)
          print("-- tags:")
@@ -112,18 +112,18 @@ def game_list(request, platform_id):
          for t in tokens:
             if not t.startswith("#"):
                results = results.filter(title__contains=t)
-   
+
    # Clicked a Navbar Item
    else:
       meta_mode = 0
       print("----- "+platform_id+" games:")
       results = Game.objects.filter(tags__name__in=[platform_id]).order_by('-release_date')
-      
+
       for game in results:
          game.review_count = Review.objects.filter(game_id=game.id).count()
-      
+
       print(results)
-      
+
    context = { 'game_list': results, 'meta_mode':meta_mode, 'meta_platform':platform_id }
    return render(request, 'gamelist.html', context)
 #---- END GAME LIST/SEARCH RESULT VIEW
@@ -141,12 +141,12 @@ def userctrl_doreg(request):
       # Is this username valid?
       if User.objects.filter(username=username).count():
          # No
-         regResult = "Username already Exists"
+         regResult = 1
       else:
          # Yes, save the new user account.
          newUser = User.objects.create_user(username, email, password)
          newUser.save()
-         
+
          # Attempt Authenticate the User
          loggedInUser = authenticate(username=username, password=password)
 
@@ -155,15 +155,15 @@ def userctrl_doreg(request):
             if loggedInUser.is_active:
                # Yes, log them in.
                login(request, loggedInUser)
-               regResult = "Registration successful.  You have been logged in."
+               regResult = 0
             else:
                # No, their account is inactive.
-               regResult = "Registration Failed =(.  Account is disabled."
+               regResult = 2
          else:
             # No, something is wrong!  HALP!
-            regResult = "Registration Failed =(.  A total meltdown occured somewhere.  Please try again later."
+            regResult = 2
 
-      return render(request, 'userctrl/registration_result.html', {'reg_result':regResult, 'request':request})
+      return render(request, 'userctrl/registration_result.html', {'reg_result':regResult})
 
 #---- User Log In
 def userctrl_login(request):
