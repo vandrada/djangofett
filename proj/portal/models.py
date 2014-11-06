@@ -82,6 +82,9 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+     
+    def get_absolute_url(self):
+       return "/djangofett/game/%i/" % self.id
 
 
 class Review(models.Model):

@@ -5,7 +5,7 @@ from portal.models import Game, Question, Review, Answer
 import random
 import datetime
 from django.utils import timezone
-
+from collections import namedtuple
 
 # Create your views here.
 def game(request, game_id):
@@ -54,10 +54,50 @@ def result(request, question_id):
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/result.html', context)
 
-#----------------------------
-#-------- PLATFORM LIST VIEWS
+#-------------------------------------
+#-------- GAME LIST/SEARCH RESULT VIEW
 def game_list(request, platform_id):
-   pass
+   context = {}
+   # Search only comes from POST requests
+   if request.method == 'POST':
+      meta_mode = 1
+      print("----- searching...")
+      query = request.POST['search_query']
+      query = query.strip()
+      
+      if query == "":
+         print("Empty query!")
+         meta_mode = 2
+      else:
+         tokens = query.split()
+         tags = {tag.strip("#") for tag in tokens if tag.startswith("#")}
+         
+         print("-- Query: ")
+         print(tokens)
+         print("-- tags:")
+         print(tags)
+         results = Game.objects.all().order_by('-release_date')
+         for tag in tags:
+            results = results.filter(tags__name__in=[tag])
+         for t in tokens:
+            if not t.startswith("#"):
+               results = results.filter(title__contains=t)
+   
+   # Clicked a Navbar Item
+   else:
+      meta_mode = 0
+      print("----- "+platform_id+" games:")
+      results = Game.objects.filter(tags__name__in=[platform_id]).order_by('-release_date')
+      
+      for game in results:
+         game.review_count = Review.objects.filter(game_id=game.id).count()
+      
+      print(results)
+      
+   context = { 'game_list': results, 'meta_mode':meta_mode, 'meta_platform':platform_id }
+   return render(request, 'gamelist.html', context)
+#---- END GAME LIST/SEARCH RESULT VIEW
+#-------------------------------------
 
 #----------------------------
 #--------- USER CONTROL VIEWS

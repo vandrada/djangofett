@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} DjangoFett - [CONSOLE] {% endblock %}
+{% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
+{% block content %}
+<style>
+.jumbotron {
+{% if meta_mode == 0 %}
+   background-image:url('{% static "platforms/jumbotron_" %}{{meta_platform}}.jpg');
+{% endif %}
+   background-origin: border-box;
+   background-size:100% auto;
+   background-position:center;
+   box-shadow: 0px 1px 5px #333333;
+   color:white;
+   text-shadow:0px 0px 20px black;
+}
+</style>
+
+   <div class="jumbotron">
+      <div class="container">
+      {% if meta_mode == 0 %}
+         <h1>{{ meta_platform|title }} Games</h1>
+      {% elif meta_mode == 1 %}
+         <h1>Search Results</h1>
+      {% endif %}
+      </div>
+   </div>
+   <!-- Add Filter Controls -->
+   <div class="container">
+      <div class="page-header">
+         <h3>[Filter Controls Placeholder]</h3>
+      </div>
+   </div>
+
+   <div class="container">
+      <table class="table table-hover">
+         <thead>
+            <tr class="active">
+               <th>Title</th>
+               <th class='col-md-3'>Num Reviews</th>
+               <th class='col-md-3'>Release Date</th>
+            </tr>
+         </thead>
+         <tbody>
+            <!-- Table Items go here!-->
+            {% for game in game_list %}
+            <tr>
+               <td><a href="{{ game.get_absolute_url }}">{{ game.title }}</a></td>
+               <td>{{ game.review_count }}</td>
+               <td>{{ game.release_date|date:"n / j / o" }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+{% endblock %}

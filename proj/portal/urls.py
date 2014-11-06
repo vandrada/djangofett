@@ -10,9 +10,10 @@ urlpatterns = patterns('',
     url(r'^review/(?P<review_id>\d+)/$', views.review, name='review'),
     url(r'^review/(?P<review_id>\d+)/report$', views.review_report,
         name='review_report'),
-    url(r'^platform/(?P<platform_id>\d+)/$', views.game_list, name='game_list'),
+    
+    url(r'^listgames/(?P<platform_id>\w+)/$', views.game_list, name='game_list'),
     # For User Control
-    url(r'^doreg/', views.userctrl_doreg, name='usr_reg'),
-    url(r'^login/', views.userctrl_login, name='usr_login'),
-    url(r'^logout/', views.userctrl_logout, name='usr_logout'),
+    url(r'^userctrl/doreg/', views.userctrl_doreg, name='usr_reg'),
+    url(r'^userctrl/login/', views.userctrl_login, name='usr_login'),
+    url(r'^userctrl/logout/', views.userctrl_logout, name='usr_logout'),
 )
