@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_deux_tags %}
 <!-- expects a review -->
 {% block title %} {{ review.title }} {% endblock %}
 {% block content %}
@@ -20,7 +21,7 @@
     <div class="panel-heading">
     </div>
     <div class="panel-body">
-      {{ review.body }}
+      {{ review.body|markdown }}
     </div>
     <div class="panel-footer">
       <div class="btn-group">

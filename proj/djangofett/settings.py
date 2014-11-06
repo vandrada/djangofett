@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'fettdb',
     'mathfilters',
     'pagedown', #For markdown editor
+    'markdown_deux',
 )
 
 MIDDLEWARE_CLASSES = (

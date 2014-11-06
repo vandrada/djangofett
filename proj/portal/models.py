@@ -14,7 +14,8 @@ Define models for djangofett website
 #WIP: Log user's responses to polls.
 class PollResponse(models.Model):
     question = models.ForeignKey('Question')
-
+    user = models.ForeignKey('auth.User')
+    
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = DateTimeField("Time of poll creation")
