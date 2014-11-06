@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
-from portal.models import Game, Question, Review, Answer
+from portal.models import Game, Question, Review, Answer, PollResponse
 from portal.forms import ReviewForm
 import random
 import datetime
@@ -71,9 +71,16 @@ def user():
 
 
 def vote(request, question_id, answer_id):
+    question = Question.objects.get(id=question_id)
+
     answer = get_object_or_404(Answer, pk=answer_id)
-    answer.inc()
-    context = {'question': Question.objects.get(id=question_id)}
+    if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
+        answer.inc()
+        p = PollResponse(question=question, user=request.user)
+        p.save()
+        #PollResponse.objects.create(question=question, user=request.user)
+        print("Voted")
+    context = {'question': question}
     return render(request, 'portal/vote.html', context)
 
 
