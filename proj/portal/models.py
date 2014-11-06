@@ -11,11 +11,14 @@ import datetime
 Define models for djangofett website
 """
 
+#WIP: Log user's responses to polls.
+class PollResponse(models.Model):
+    question = models.ForeignKey('Question')
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = DateTimeField("Time of poll creation")
-
+    
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
@@ -63,7 +66,6 @@ class Answer(models.Model):
     answer_text = models.CharField(max_length=50, default="")
     question = models.ForeignKey(Question)
     vote_count = models.IntegerField(default=0)
-    author = models.ForeignKey('auth.User')
     def inc(self):
         self.vote_count += 1
         print(type(self.vote_count))

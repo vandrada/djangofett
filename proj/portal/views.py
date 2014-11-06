@@ -72,8 +72,7 @@ def user():
 
 def vote(request, question_id, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
-    if request.user.is_authenticated() and answer not in request.user.answer_set.all():
-        answer.inc()
+    answer.inc()
     context = {'question': Question.objects.get(id=question_id)}
     return render(request, 'portal/vote.html', context)
 
