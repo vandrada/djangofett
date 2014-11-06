@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer
@@ -6,7 +6,9 @@ from portal.forms import ReviewForm
 import random
 import datetime
 from django.utils import timezone
+from django.http import HttpResponseRedirect
 from collections import namedtuple
+
 
 # Create your views here.
 def game(request, game_id):
@@ -43,18 +45,23 @@ def review_karma(request, review_id):
     return render(request, 'portal/review_karma.html', context)
 
 def review_edit(request, review_id):
-    context = {'review': Review.objects.get(id=review_id)}
-    #Fill up the form with the submitted data
+    review = get_object_or_404(Review, pk=review_id)
+
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
-            #TODO: Save cleaned up data to review object.
-            return HttpResponseRedirect('/submit_success/')
+            #Save the data in the database as a Review object.
+            review = form.save(commit=False)
+            review.pub_date = timezone.now()
+            review.save()
+            return HttpResponseRedirect('/djangofett/home') #TODO: Make this a thank you page.
     #Create an empty form if 'GET' was used instead.
     else:
-        form = ReviewForm()
-        context['form'] = form
-    return render(request, 'portal/review_edit.html', context)
+        form = ReviewForm(instance=review)
+    return render(request, 'portal/review_edit.html', {
+        'review': review,
+        'form' : form,
+    })
 
 def user():
     # TODO

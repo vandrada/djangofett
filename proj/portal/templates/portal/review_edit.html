@@ -1,11 +1,9 @@
 <!--Simply display a review page with a review form and submit buttons.-->
-<!-- NOTE: Doesn't display anything for some reason? Investigate...-->
  {% extends "base.html" %} 
    {% block content %}
    <head>
       {{ form.media }}
    </head>
-   <!-- form.Meta.model.id <- this does nothing!-->
    <form action={% url 'review_edit' review.id  %} method="post">
    {% csrf_token %}
    {{ form }}

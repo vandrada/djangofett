@@ -89,10 +89,10 @@ class Game(models.Model):
 
 class Review(models.Model):
     title = models.CharField(max_length=100)
-    body = models.CharField(max_length=5000)    # is this long enough? yes
-    author_id = models.ForeignKey(User)
-    game_id = models.ForeignKey(Game)
-    pub_date = DateTimeField()
+    body = models.TextField() 
+    author_id = models.ForeignKey('auth.User')
+    game_id = models.ForeignKey('Game')
+    pub_date = DateTimeField(default=timezone.now)
     karma = models.IntegerField(default=0)
     reported_count = models.IntegerField(default=0)
 
