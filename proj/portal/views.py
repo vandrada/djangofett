@@ -43,6 +43,7 @@ def review_karma(request, review_id):
     return render(request, 'portal/review_karma.html', context)
 
 def review_edit(request, review_id):
+    context = {'review': Review.objects.get(id=review_id)}
     #Fill up the form with the submitted data
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -52,7 +53,8 @@ def review_edit(request, review_id):
     #Create an empty form if 'GET' was used instead.
     else:
         form = ReviewForm()
-    return render(request, 'portal/review_edit.html', {'form': form})
+        context['form'] = form
+    return render(request, 'portal/review_edit.html', context)
 
 def user():
     # TODO
