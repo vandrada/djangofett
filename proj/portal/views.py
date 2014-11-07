@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
-from portal.models import Game, Question, Review, Answer, PollResponse
+from portal.models import Game, Question, Review, Answer, PollResponse, User
 from portal.forms import ReviewForm
 import random
 import datetime
@@ -35,8 +35,7 @@ def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
     review.inc_reports()
     context = {'review': Review.objects.get(id=review_id)}
-    #TODO
-    return redirect('/djangofett/review/{}'.format(review_id))
+    return redirect('portal/review.html', )
 
 
 def review_karma(request, review_id):
@@ -82,8 +81,9 @@ def review_edit(request, review_id):
     else:
         return home(request) #Placeholder: tell the usr they can't do this.
 
-def user():
-    # TODO
+def user(request, user_id):
+    u = User.objects.get(id=user_id)
+    return render(request, 'portal/user.html', {'karma': u.get_karma()})
     pass
 
 

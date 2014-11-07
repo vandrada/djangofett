@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+{% block title %} {{ user.username }} {% endblock %}
+{% block content %}
+
+<br>
+<div class="page-header">
+  <h1> {{ user.username }}
+  <span class="label label-success pull-right" title="karma points"> {{ karma }}</span>
+  </h1>
+<div/>
+
+<ul class="list-group">
+    {% for rev in user.review_set.all %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>
+              <span class="label label-success pull-right" title="karma points"> {{ rev.karma }}</span>
+            </h4>
+          <h3 class="panel-title"><p class="text-primary">
+            <a href={% url 'portal.views.review' rev.id %}>
+              {{ rev.title }}</a> </p>by {{ rev.author_id }}
+          </h3>
+          <h4>
+            <span class="label label-danger pull-right" title="reports"> {{ rev.reported_count }} </span>
+            </h4>
+          {{ rev.pub_date|date }}
+        </div>
+        <div class="panel-body">
+          {{ rev.preview|markdown}}
+        </div>
+      </div>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
