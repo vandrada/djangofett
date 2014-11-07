@@ -36,7 +36,7 @@ def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
     review.inc_reports()
     context = {'review': Review.objects.get(id=review_id)}
-    return redirect('portal/review.html', )
+    return redirect('/djangofett/review/{}'.format(review_id))
 
 
 def review_karma(request, review_id):
