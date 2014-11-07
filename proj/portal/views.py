@@ -82,7 +82,10 @@ def vote(request, question_id, answer_id):
         #PollResponse.objects.create(question=question, user=request.user)
         print("Voted")
     #else: NOTE: Have message like "A vote from this user has already been registered"
-    context = {'question': question}
+    # calculate the highest after the model has been updated
+    highest = question.answer_set.order_by('vote_count').reverse()[0]
+    rest = question.answer_set.order_by('vote_count').reverse()[1:]
+    context = {'question': question, 'highest': highest, 'rest': rest}
     return render(request, 'portal/vote.html', context)
 
 
@@ -90,7 +93,10 @@ def result(request, question_id):
     """
     Just the results...no votes
     """
-    context = {'question': Question.objects.get(id=question_id)}
+    question = Question.objects.get(id=question_id)
+    highest = question.answer_set.order_by('vote_count').reverse()[0]
+    rest = question.answer_set.order_by('vote_count').reverse()[1:]
+    context = {'question': question, 'highest': highest, 'rest': rest}
     return render(request, 'portal/result.html', context)
 
 #-------------------------------------
