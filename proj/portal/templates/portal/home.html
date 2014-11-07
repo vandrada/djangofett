@@ -21,7 +21,7 @@
               title="{{ rev.game_id.title }}">
           </a>
           <div class="media-body">
-            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a></h3>
+            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a><small>{{ rev.author.username }}</small></h3>
             {{ rev.preview }}
           </div>
         </li>

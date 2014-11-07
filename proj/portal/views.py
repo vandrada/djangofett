@@ -20,8 +20,9 @@ def game(request, game_id):
 def home(request):
     rand = random.randint(1, len(Question.objects.all()))
     random_question = Question.objects.get(id=rand)
-    recent_reviews = Review.objects.filter(pub_date__lt=timezone.now() -
-                                           datetime.timedelta(days=1))
+    recent_reviews = Review.objects.all().order_by('-pub_date')[:10]
+    #recent_reviews = Review.objects.filter(pub_date__lt=timezone.now() -
+    #                                        datetime.timedelta(days=1))
     context = {'question': random_question, 'reviews': recent_reviews}
     return render(request, 'portal/home.html', context)
 
@@ -214,7 +215,9 @@ def userctrl_login(request):
       if user is not None:
          if user.is_active:
             login(request, user)
-            return redirect('/fettdb/placeholder')
+            #user(request, user)
+            return redirect(request.META['HTTP_REFERER'])
+            #return redirect('/djangofett/user/'+str(user.id))
          #else:
       # Return a 'disabled account' error message
       else:
@@ -224,7 +227,7 @@ def userctrl_login(request):
 #---- User Log Out
 def userctrl_logout(request):
    logout(request)
-   return redirect('/fettdb/placeholder')
+   return redirect('/djangofett/')
 
 
 #----- END USER CONTROL VIEWS
