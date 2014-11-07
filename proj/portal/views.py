@@ -97,24 +97,19 @@ def result(request, question_id):
 #-------- GAME LIST/SEARCH RESULT VIEW
 def game_list(request, platform_id):
    context = {}
+   results = {}
    # Search only comes from POST requests
    if request.method == 'POST':
       meta_mode = 1
-      print("----- searching...")
       query = request.POST['search_query']
       query = query.strip()
 
       if query == "":
-         print("Empty query!")
          meta_mode = 2
       else:
          tokens = query.split()
          tags = {tag.strip("#") for tag in tokens if tag.startswith("#")}
 
-         print("-- Query: ")
-         print(tokens)
-         print("-- tags:")
-         print(tags)
          results = Game.objects.all().order_by('-release_date')
          for tag in tags:
             results = results.filter(tags__name__in=[tag])
@@ -122,18 +117,19 @@ def game_list(request, platform_id):
             if not t.startswith("#"):
                results = results.filter(title__contains=t)
 
+         context['query'] = query
+
    # Clicked a Navbar Item
    else:
       meta_mode = 0
-      print("----- "+platform_id+" games:")
       results = Game.objects.filter(tags__name__in=[platform_id]).order_by('-release_date')
 
-      for game in results:
-         game.review_count = Review.objects.filter(game_id=game.id).count()
+   for game in results:
+      game.review_count = Review.objects.filter(game_id=game.id).count()
 
-      print(results)
-
-   context = { 'game_list': results, 'meta_mode':meta_mode, 'meta_platform':platform_id }
+   context['game_list'] = results
+   context['meta_mode'] = meta_mode
+   context['meta_platform'] = platform_id
    return render(request, 'gamelist.html', context)
 #---- END GAME LIST/SEARCH RESULT VIEW
 #-------------------------------------

@@ -5,9 +5,7 @@
 {% block content %}
 <style>
 .jumbotron {
-{% if meta_mode == 0 %}
    background-image:url('{% static "platforms/jumbotron_" %}{{meta_platform}}.jpg');
-{% endif %}
    background-origin: border-box;
    background-size:100% auto;
    background-position:center;
@@ -16,25 +14,25 @@
    text-shadow:0px 0px 20px black;
 }
 </style>
-
    <div class="jumbotron">
       <div class="container">
       {% if meta_mode == 0 %}
          <h1>{{ meta_platform|title }} Games</h1>
-      {% elif meta_mode == 1 %}
+      {% elif meta_mode == 1 or meta_mode == 2 %}
          <h1>Search Results</h1>
+         <h4>{{ query }}</h4>
       {% endif %}
       </div>
    </div>
-   <!-- Add Filter Controls -->
+   <!-- Add Filter Controls
    <div class="container">
       <div class="page-header">
          <h3>[Filter Controls Placeholder]</h3>
       </div>
-   </div>
+   </div>-->
 
    <div class="container">
-      <table class="table table-hover">
+      <table id="gametable" class="table tablesorter">
          <thead>
             <tr class="active">
                <th>Title</th>
