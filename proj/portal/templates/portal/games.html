@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_deux_tags %}
 {% block title %} {{ game.title }} {% endblock %}
 {% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
 {% block content %}
@@ -48,7 +49,7 @@
           {{ rev.pub_date|date }}
         </div>
         <div class="panel-body">
-          {{ rev.preview }}
+          {{ rev.preview|markdown}}
         </div>
       </div>
     {% endfor %}
