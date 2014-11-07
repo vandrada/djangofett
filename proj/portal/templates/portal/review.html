@@ -25,30 +25,24 @@
     </div>
     <div class="panel-footer">
       <div class="btn-group">
-        <p>
           <form action={% url 'portal.views.review_karma' review.id %} method="post">
             {% csrf_token %}
-            <button class="btn btn-default" title="give karma">
-              <span class="glyphicon glyphicon-usd"</span>
+            <button type="submit" class="btn btn-default" title="give karma">
+              <span class="glyphicon glyphicon-thumbs-up"</span>
             </button>
           </form>
-        </p>
-        <p>
           <form>
             <!-- TODO add ability to post a comment -->
-            <button class="btn btn-default" title="add comment">
+            <button type="button" class="btn btn-default" title="add comment">
               <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
           </form>
-        </p>
-        <p>
           <form action={% url 'portal.views.review_report' review.id %} method="post">
             {% csrf_token %}
-            <button class="btn btn-default" title="report">
-              <span class="glyphicon glyphicon-remove-circle"></span>
+            <button type="sumbit" class="btn btn-default" title="report">
+              <span class="glyphicon glyphicon-thumbs-down"></span>
             </button>
             </form>
-        </p>
       </div>
     </div>
   </div>

@@ -35,14 +35,15 @@ def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
     review.inc_reports()
     context = {'review': Review.objects.get(id=review_id)}
-    return render(request, 'portal/review_report.html', context)
+    #TODO
+    return redirect('/djangofett/review/{}'.format(review_id))
 
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
     review.inc_karma()
     context = {'review': Review.objects.get(id=review_id)}
-    return render(request, 'portal/review_karma.html', context)
+    return redirect('/djangofett/review/{}'.format(review_id))
 
 def review_edit(request, review_id):
     review = get_object_or_404(Review, pk=review_id)

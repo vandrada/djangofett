@@ -1,14 +1,18 @@
 {% extends "base.html" %}
-
 {% block title %} {{ game.title }} {% endblock %}
 {% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
 {% block content %}
-    {% if game %}
-    <div class="jumbotron">
-        <div id="animate-area"></div>
-    </div>
-
+<!--<style>
+  .panel-heading {
+    text-align: center;
+    color: #ececb0 !imporant;
+  }-->
+</style>
     <div class="page-header">
+      <div class="media">
+        <a class="pull-right">
+          <img src="{{MEDIA_URL}}{{game.image}}" width="209" height="241" alt="...">
+        </a>
         <!-- Game details -->
         <h1>{{ game.title }}</h1>
         <!-- TODO make these tags links-->
@@ -31,11 +35,17 @@
     {% for rev in game.review_set.all %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><a href={% url 'portal.views.review' rev.id %}>
-            {{ rev.title }}</a> by {{ rev.author_id }}
-            <span class="label label-success" title="karma points"> {{ rev.karma }}</span>
-            <span class="label label-danger" title="reports"> {{ rev.reported_count }} </span>
+            <h4>
+              <span class="label label-success pull-right" title="karma points"> {{ rev.karma }}</span>
+            </h4>
+          <h3 class="panel-title"><p class="text-primary">
+            <a href={% url 'portal.views.review' rev.id %}>
+              {{ rev.title }}</a> </p>by {{ rev.author_id }}
+            <br>
           </h3>
+          <h4>
+            <span class="label label-danger pull-right" title="reports"> {{ rev.reported_count }} </span>
+            </h4>
           {{ rev.pub_date|date }}
         </div>
         <div class="panel-body">
@@ -44,8 +54,4 @@
       </div>
     {% endfor %}
     </ul>
-    {% else %}
-        <h1> Title? </h1>
-    {% endif %}
-
 {% endblock %}
