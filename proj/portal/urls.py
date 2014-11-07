@@ -17,6 +17,8 @@ urlpatterns = patterns('',
         name='review_karma'),
     url(r'^game/(?P<review_id>\d+)/edit/$', views.review_edit,
         name='review_edit'),
+    url(r'^game/\d+/create/$', views.review_create,
+        name='review_create'),
     # Game List/Search
     url(r'^listgames/(?P<platform_id>\w+)/$', views.game_list, name='game_list'),
     # For User Control
