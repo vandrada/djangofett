@@ -46,6 +46,36 @@ def review_karma(request, review_id):
     return redirect('/djangofett/review/{}'.format(review_id))
 
 def review_edit(request, review_id):
+    try:
+        review = get_object_or_404(Review, pk=review_id)
+    except:
+        review = None
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            #Save the data in the database as a Review object.
+            review = form.save(commit=False)
+            review.pub_date = timezone.now()
+            review.save()
+            return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))
+    #Create an empty form if 'GET' was used instead. Prevent unauthorized
+    #review modifications. Allow for creation of a new review.
+    elif (review is not None) and request.user == review.author_id:
+        form = ReviewForm(instance=review)
+        return render(request, 'portal/review_edit.html', {
+            'review': review,
+            'form' : form,
+        })
+    elif review is None:
+        form = ReviewForm()
+        return render(request, 'portal/review_edit.html', {
+            'form' : form,
+        })
+    elif request.user != review.author_id:
+        return home(request) #Placeholder: tell the usr they can't do this.
+
+""" Just in case the above one is beyond help
+def review_edit(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -65,6 +95,7 @@ def review_edit(request, review_id):
         })
     else:
         return home(request) #Placeholder: tell the usr they can't do this.
+"""
 
 def user():
     # TODO
