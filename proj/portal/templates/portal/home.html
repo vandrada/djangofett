@@ -2,38 +2,50 @@
 <!-- { question, reviews } -->
 {% block title %}DjangoFett{% endblock %}
 {% block content %}
-  <!-- display a poll question -->
   <div class="jumbotron">
     <h2>Home</h2>
   </div>
   <!-- Left side -->
-  <div class="col-md-8">
-    <h2>Reviews  <span class="label label-default left">Recent</span></h2>
-     <ul class="media-list">
-    {% for rev in reviews %}
-      <li class="media">
-        <a class="pull-left" href={% url 'portal.views.game' rev.game_id.id %}>
-          <img class="media-object" src="{{ MEDIA_URL}}{{rev.game_id.image}}" width="104" height="120"
-            title="{{ rev.game_id.title }}">
-        </a>
-        <div class="media-body">
-          <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a></h3>
-          {{ rev.preview }}
-        </div>
-      </li>
-    {% endfor %}
-    </ul>
-  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2>Reviews  <span class="label label-default left">Recent</span></h2>
+      </div>
+      <div class="panel-body">
+        <ul class="media-list">
+        {% for rev in reviews %}
+        <li class="media">
+          <a class="pull-left" href={% url 'portal.views.game' rev.game_id.id %}>
+            <img class="media-object" src="{{ MEDIA_URL}}{{rev.game_id.image}}"
+            width="125" height="145"
+              title="{{ rev.game_id.title }}">
+          </a>
+          <div class="media-body">
+            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a></h3>
+            {{ rev.preview }}
+          </div>
+        </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div> <!-- end column -->
   <!-- Right Side -->
   <div class="col-md-3">
-    <h3><a href={% url 'portal.views.result' question.id %}>{{ question.question_text }}</a></h3>
-    {% for answer in question.answer_set.all %}
-      <div class="btn-group">
-        <form action={% url 'portal.views.vote' question.id answer.id %} method="post">
-          {% csrf_token %}
-          <button class="btn btn-primary btn-lg" id="vote_btn" role="button"> {{ answer.answer_text }} </button>
-      </form>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3><a href={% url 'portal.views.result' question.id %}>{{ question.question_text }}</a></h3>
       </div>
-    {% endfor %}
+      <div class="panel-body">
+        {% for answer in question.answer_set.all %}
+        <div class="btn-group">
+          <form action={% url 'portal.views.vote' question.id answer.id %} method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm" id="vote_btn" role="button"> {{ answer.answer_text }} </button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 {% endblock %}
