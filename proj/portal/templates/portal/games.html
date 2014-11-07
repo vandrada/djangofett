@@ -21,7 +21,7 @@
         <h3> <small> Publisher: {{ game.publisher }}</small></h3>
         <h3><small> Release date: {{ game.release_date|date }} </small></h3>
         <!-- TODO link to write a review page-->
-        <form action={% url 'portal.views.review_edit' game.id %}>
+        <form action="create/">
           {% csrf_token %}
             <button class="btn btn-primary btn-lg" role="button">Write a Review</button>
         </form>
