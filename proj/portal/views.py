@@ -93,7 +93,8 @@ def user(request, user_id):
     else:
         rank = "GOAT"
     context = {'karma': u.get_karma(),
-               'rank': rank}
+               'rank': rank,
+               'about': u.about}
     return render(request, 'portal/user.html', context)
     pass
 

@@ -10,7 +10,10 @@
   </h1>
   <h3>Date joined: {{ user.date_joined|date }}</h3>
   <h3>Rank: {{ rank }}</h3>
+  <h3>About Me:</h3>
+  {{ about }}
 <div/>
+<h1> Reviews</h1>
 <ul class="list-group">
     {% for rev in user.review_set.all %}
       <div class="panel panel-default">

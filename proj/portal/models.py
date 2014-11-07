@@ -41,6 +41,7 @@ class User(AuthUser):
                     (GOAT, "Greatest of all time"))
 
     rank = models.CharField(max_length=2, choices=RANK_CHOICES, default=NOOB)
+    about = models.CharField(max_length=200, default="")
 
     def __str__(self):
         return self.username
