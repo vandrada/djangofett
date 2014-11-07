@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<!-- {question, highest, rest} -->
 {% block content %}
   <div class="jumbotron">
     <h1> {{ question.question_text }}</h1>
@@ -8,12 +9,16 @@
   <div class="page-header">
     <h1>Results<h1>
   </div>
-  <ul class="list-group">
-  {% for answer in question.answer_set.all %}
-    <li class="list-group-item">
+
+  <div class="list-group">
+  <a class="list-group-item active">
+    <span class="badge pull-right">{{ highest.vote_count }}</span>
+    {{ highest.answer_text}}
+  {% for answer in rest %}
+    <a class="list-group-item">
       <span class="badge pull-right">{{ answer.vote_count }}</span>
         {{ answer.answer_text }}
-    </li>
+    </a>
   {% endfor %}
-  </ul>
+  </div>
 {% endblock %}
