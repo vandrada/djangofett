@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+<!-- {karma, rank>
 {% load markdown_deux_tags %}
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
-
 <br>
 <div class="page-header">
   <h1> {{ user.username }}
   <span class="label label-success pull-right" title="karma points"> {{ karma }}</span>
   </h1>
+  <h3>Date joined: {{ user.date_joined|date }}</h3>
+  <h3>Rank: {{ rank }}</h3>
 <div/>
-
 <ul class="list-group">
     {% for rev in user.review_set.all %}
       <div class="panel panel-default">

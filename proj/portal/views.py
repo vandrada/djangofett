@@ -83,7 +83,18 @@ def review_edit(request, review_id):
 
 def user(request, user_id):
     u = User.objects.get(id=user_id)
-    return render(request, 'portal/user.html', {'karma': u.get_karma()})
+    rank = ""
+    if u.rank == "NB":
+        rank = "Noob"
+    elif u.rank == "SM":
+        rank = "Samaritan"
+    elif u.rank == "PR":
+        rank = "Professional"
+    else:
+        rank = "GOAT"
+    context = {'karma': u.get_karma(),
+               'rank': rank}
+    return render(request, 'portal/user.html', context)
     pass
 
 
