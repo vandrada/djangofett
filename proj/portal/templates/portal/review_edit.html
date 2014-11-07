@@ -1,5 +1,5 @@
 <!--Simply display a review page with a review form and submit buttons.-->
- {% extends "base.html" %} 
+ {% extends "base.html" %}
    {% block content %}
    <br>
    <br>
@@ -9,7 +9,7 @@
    {% if review.id %}
    <form action={% url 'review_edit' review.id  %} method="post">
    {% else %}
-   <form action={% url 'review_create' %} method="post">
+   <form action="" method="post">
    {% endif %}
    {% csrf_token %}
    {{ form }}

@@ -45,12 +45,14 @@ def review_karma(request, review_id):
     context = {'review': Review.objects.get(id=review_id)}
     return redirect('/djangofett/review/{}'.format(review_id))
 
-def review_create(request):
+def review_create(request, game_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.pub_date = timezone.now()
+            review.author_id = request.user
+            review.game_id = Game.objects.get(id=game_id)
             review.save()
             return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))
     else:
