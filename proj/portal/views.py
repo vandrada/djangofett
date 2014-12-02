@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer, PollResponse, User
+from portal.models import ReviewResponse
 from portal.forms import ReviewForm
 import random
 import datetime
@@ -34,14 +35,22 @@ def review(request, review_id):
 
 def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
-    review.inc_reports()
+    #Prevent multiple downvotes
+    if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+            review.inc_reports()
+            r = ReviewResponse(review=review, user=request.user)
+            r.save()
     context = {'review': Review.objects.get(id=review_id)}
     return redirect('/djangofett/review/{}'.format(review_id))
 
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
-    review.inc_karma()
+    #Prevent multiple upvotes
+    if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+        review.inc_karma()
+        r = ReviewResponse(review=review, user=request.user)
+        r.save()
     context = {'review': Review.objects.get(id=review_id)}
     return redirect('/djangofett/review/{}'.format(review_id))
 
