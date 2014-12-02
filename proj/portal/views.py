@@ -9,6 +9,7 @@ import datetime
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from collections import namedtuple
+import sys
 
 
 # Create your views here.
@@ -35,24 +36,30 @@ def review(request, review_id):
 
 def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
-    #Prevent multiple downvotes
-    if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
-            review.inc_reports()
-            r = ReviewResponse(review=review, user=request.user)
-            r.save()
-    context = {'review': Review.objects.get(id=review_id)}
+    #Prevent multiple downvotes & anonymous voting
+    if (request.user.__str__() != "AnonymousUser"):
+        if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+                review.inc_reports()
+                r = ReviewResponse(review=review, user=request.user)
+                r.save()
+        context = {'review': Review.objects.get(id=review_id)}
     return redirect('/djangofett/review/{}'.format(review_id))
+    #else: TODO
+    #    return same page with popup "Please log in to downvote"
 
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
-    #Prevent multiple upvotes
-    if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
-        review.inc_karma()
-        r = ReviewResponse(review=review, user=request.user)
-        r.save()
-    context = {'review': Review.objects.get(id=review_id)}
+    #Prevent multiple upvotes & anonymous voting
+    if (request.user.__str__() != "AnonymousUser"):
+        if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+            review.inc_karma()
+            r = ReviewResponse(review=review, user=request.user)
+            r.save()
+        context = {'review': Review.objects.get(id=review_id)}
     return redirect('/djangofett/review/{}'.format(review_id))
+    #else: TODO
+    #    return same page with popup "Please log in to upvote"
 
 def review_create(request, game_id):
     if request.method == 'POST':
@@ -113,13 +120,15 @@ def vote(request, question_id, answer_id):
     question = Question.objects.get(id=question_id)
 
     answer = get_object_or_404(Answer, pk=answer_id)
-    if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
-        answer.inc()
-        p = PollResponse(question=question, user=request.user)
-        p.save()
-        #PollResponse.objects.create(question=question, user=request.user)
-        print("Voted")
-    #else: NOTE: Have message like "A vote from this user has already been registered"
+    if (request.user.__str__() != "AnonymousUser"):
+        if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
+            answer.inc()
+            p = PollResponse(question=question, user=request.user)
+            p.save()
+            #PollResponse.objects.create(question=question, user=request.user)
+            print("Voted")
+        #else: NOTE: Have message like "A vote from this user has already been registered"
+    #else: TODO: return same page with popup saying please log in to vote
     # calculate the highest after the model has been updated
     highest = question.answer_set.order_by('vote_count').reverse()[0]
     rest = question.answer_set.order_by('vote_count').reverse()[1:]
