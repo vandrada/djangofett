@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'mathfilters',
     'pagedown', #For markdown editor
     'markdown_deux',
+    'bootstrapform', #For bootstrap forms
 )
 
 MIDDLEWARE_CLASSES = (

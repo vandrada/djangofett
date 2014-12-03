@@ -1,8 +1,9 @@
 {% extends "portal/review.html" %}
+{% load bootstrap %}
 {% block formspot %}
    <form action={% url 'portal.views.review_comment' review.id %} method="post">
    {% csrf_token %}
-   {{ form }}
+   {{ form|bootstrap }}
    <input type="submit" value="Post Comment">
    </form>
 {% for comment in comments %} <!--This will stay, above will go.-->
