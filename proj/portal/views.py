@@ -41,28 +41,44 @@ def review(request, review_id):
 
 def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
+    msg = False
+    form = CommentForm()
     #Prevent multiple downvotes & anonymous voting
     if (request.user.__str__() != "AnonymousUser"):
         if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
                 review.inc_reports()
                 r = ReviewResponse(review=review, user=request.user)
                 r.save()
-        context = {'review': Review.objects.get(id=review_id)}
-    return redirect('/djangofett/review/{}'.format(review_id))
+        else:
+            msg = "An upvote/report from this user has already been submitted.\n"
+    else:
+        msg = "Please log in to upvote/report.\n"
+    context = {'review': Review.objects.get(id=review_id), 
+            'msg' : msg, 'form': form}
+    #return redirect('/djangofett/review/{}'.format(review_id))
+    return render(request, 'portal/review_comment.html', context)
     #else: TODO
     #    return same page with popup "Please log in to downvote"
 
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
+    msg = False
+    form = CommentForm()
     #Prevent multiple upvotes & anonymous voting
     if (request.user.__str__() != "AnonymousUser"):
         if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
             review.inc_karma()
             r = ReviewResponse(review=review, user=request.user)
             r.save()
-        context = {'review': Review.objects.get(id=review_id)}
-    return redirect('/djangofett/review/{}'.format(review_id))
+        else:
+            msg = "An upvote/report from this user has already been submitted.\n"
+    else:
+        msg = "Please log in to upvote/report.\n"
+    context = {'review': Review.objects.get(id=review_id),
+               'msg' : msg, 'form': form}
+    return render(request, 'portal/review_comment.html', context)
+    #return redirect('/djangofett/review/{}'.format(review_id))
     #else: TODO
     #    return same page with popup "Please log in to upvote"
 
@@ -148,7 +164,7 @@ def user(request, user_id):
 
 def vote(request, question_id, answer_id):
     question = Question.objects.get(id=question_id)
-
+    msg = False #Utilize for convenient error msging.
     answer = get_object_or_404(Answer, pk=answer_id)
     if (request.user.__str__() != "AnonymousUser"):
         if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
@@ -157,12 +173,14 @@ def vote(request, question_id, answer_id):
             p.save()
             #PollResponse.objects.create(question=question, user=request.user)
             print("Voted")
-        #else: NOTE: Have message like "A vote from this user has already been registered"
-    #else: TODO: return same page with popup saying please log in to vote
+        else: 
+            msg = "A vote from this user has already been registered."
+    else: 
+        msg = "Please log in to vote."
     # calculate the highest after the model has been updated
     highest = question.answer_set.order_by('vote_count').reverse()[0]
     rest = question.answer_set.order_by('vote_count').reverse()[1:]
-    context = {'question': question, 'highest': highest, 'rest': rest}
+    context = {'question': question, 'highest': highest, 'rest': rest, 'msg': msg}
     return render(request, 'portal/vote.html', context)
 
 

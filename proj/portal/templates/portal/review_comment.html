@@ -1,5 +1,10 @@
 {% extends "portal/review.html" %}
 {% load bootstrap %}
+{% block errspot %}
+   {% if msg %}
+   <h3>{{ msg }}</h3>
+   {% endif %}
+{% endblock %}
 {% block formspot %}
    <form action={% url 'portal.views.review' review.id %} method="post">
    {% csrf_token %}

@@ -15,8 +15,12 @@
     <h2>
       <span class="label label-success" title="karma points"> {{ review.karma }}</span>
       <span class="label label-danger" title="reports"> {{ review.reported_count }} </span>
+
+    <!-- Here goes an error message if someone who voted tries to do so again.-->
+    {% block errspot %}{% endblock %}
       </h2>
   </div>
+
   <div class="panel panel-default">
     <div class="panel-heading">
     </div>
@@ -50,5 +54,4 @@
 
    {% block formspot %}{% endblock %}
             <!--- First display the form, then the comments -->
-            <!--- This looks like total crap atm. Fix it up to look good.-->
 {% endblock %}
