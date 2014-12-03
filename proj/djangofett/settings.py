@@ -74,7 +74,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/North_Dakota/New_Salem'
 
 USE_I18N = True
 

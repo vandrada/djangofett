@@ -1,0 +1,11 @@
+{% extends "portal/review.html" %}
+{% block formspot %}
+   <form action={% url 'portal.views.review_comment' review.id %} method="post">
+   {% csrf_token %}
+   {{ form }}
+   <input type="submit" value="Post Comment">
+   </form>
+{% for comment in comments %} <!--This will stay, above will go.-->
+      <p>{{comment.user_id}} said: {{comment.body}} on {{comment.timestamp}}</p>
+{% endfor %}
+{% endblock %}

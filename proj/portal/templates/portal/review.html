@@ -39,11 +39,16 @@
           </form>
           <form action={% url 'portal.views.review_report' review.id %} method="post">
             {% csrf_token %}
-            <button type="sumbit" class="btn btn-default" title="report">
+            <button type="submit" class="btn btn-default" title="report">
               <span class="glyphicon glyphicon-thumbs-down"></span>
             </button>
             </form>
+            
       </div>
     </div>
   </div>
+
+   {% block formspot %}{% endblock %}
+            <!--- First display the form, then the comments -->
+            <!--- This looks like total crap atm. Fix it up to look good.-->
 {% endblock %}

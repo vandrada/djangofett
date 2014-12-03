@@ -16,6 +16,7 @@ class PollResponse(models.Model):
     question = models.ForeignKey('Question')
     user = models.ForeignKey('auth.User')
 
+#Log user's responses to reviews (karma votes/reports)
 class ReviewResponse(models.Model):
     review = models.ForeignKey('Review')
     user = models.ForeignKey('auth.User')
@@ -125,11 +126,11 @@ class Comment(models.Model):
     """
     Comments on reviews...and perhaps more.
     """
-    body = models.CharField(max_length=1000)  # Same length as last.fm comments
-    user_id = models.ForeignKey(User)
+    body = models.TextField(max_length=1000)  # Same length as last.fm comments
+    user_id = models.ForeignKey('auth.User')
     review_id = models.ForeignKey(Review)
-    timestamp = DateTimeField()
+    timestamp = DateTimeField(default=timezone.now)
     reported_count = models.IntegerField(default=0)
-
+    #NOTE: Probably unnecessary.
     def __str__(self):
         return "{}... by {}".format(self.body[:10], self.user_id)

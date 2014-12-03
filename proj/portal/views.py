@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer, PollResponse, User
-from portal.models import ReviewResponse
-from portal.forms import ReviewForm
+from portal.models import ReviewResponse, Comment
+from portal.forms import ReviewForm, CommentForm
 import random
 import datetime
 from django.utils import timezone
@@ -28,9 +28,13 @@ def home(request):
     context = {'question': random_question, 'reviews': recent_reviews}
     return render(request, 'portal/home.html', context)
 
-
+#Deprecated? I'm keeping it here just in case.
 def review(request, review_id):
-    context = {'review': Review.objects.get(id=review_id)}
+    review = Review.objects.get(id=review_id)
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+    print(comment_list) #Just a debug statement..
+    context = {'review': Review.objects.get(id=review_id),
+                'comments': comment_list}
     return render(request, 'portal/review.html', context)
 
 
@@ -60,6 +64,31 @@ def review_karma(request, review_id):
     return redirect('/djangofett/review/{}'.format(review_id))
     #else: TODO
     #    return same page with popup "Please log in to upvote"
+
+#Allows a user to write comments on review pages.
+def review_comment(request, review_id):
+    review = Review.objects.get(id=review_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if request.user.__str__() != "AnonymousUser":
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user_id = request.user
+                comment.review_id = Review.objects.get(id=review_id)
+                comment.timestamp = timezone.now() #Gives weird time.
+                comment.save()
+            return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
+    else:
+        #Placeholder to test if the comment form actually manifests.
+        print('doodad')
+        form = CommentForm()
+        comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+        return render(request, 'portal/review_comment.html', {
+            'form' : form, 'review' : review, 'comments': comment_list})
+    """else:
+        form = CommentForm()
+        return render(request, 'portal/review.html', {"""
+        
 
 def review_create(request, game_id):
     if request.method == 'POST':

@@ -4,7 +4,7 @@
    <br>
    <br>
    <head>
-      {{ form.media }}
+      {{ form.media }} <!--Lay out the markdown editor-->
    </head>
    {% if review.id %}
    <form action={% url 'review_edit' review.id  %} method="post">
