@@ -29,6 +29,7 @@ def home(request):
     return render(request, 'portal/home.html', context)
 
 #Deprecated? I'm keeping it here just in case.
+"""
 def review(request, review_id):
     review = Review.objects.get(id=review_id)
     comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
@@ -36,7 +37,7 @@ def review(request, review_id):
     context = {'review': Review.objects.get(id=review_id),
                 'comments': comment_list}
     return render(request, 'portal/review.html', context)
-
+"""
 
 def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
@@ -66,7 +67,7 @@ def review_karma(request, review_id):
     #    return same page with popup "Please log in to upvote"
 
 #Allows a user to write comments on review pages.
-def review_comment(request, review_id):
+def review(request, review_id):
     review = Review.objects.get(id=review_id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -77,7 +78,7 @@ def review_comment(request, review_id):
                 comment.review_id = Review.objects.get(id=review_id)
                 comment.timestamp = timezone.now() #Gives weird time.
                 comment.save()
-            return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
+        return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
     else:
         #Placeholder to test if the comment form actually manifests.
         print('doodad')
