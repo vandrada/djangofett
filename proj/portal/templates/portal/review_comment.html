@@ -4,7 +4,8 @@
    <form action={% url 'portal.views.review' review.id %} method="post">
    {% csrf_token %}
    {{ form|bootstrap }}
-   <input type="submit" value="Post Comment">
+   <button type="submit" class="btn btn-default">Post Comment</button>
+   <br>
    </form>
 {% for comment in comments %} <!--This will stay, above will go.-->
       <p>{{comment.user_id}} said: {{comment.body}} on {{comment.timestamp}}</p>

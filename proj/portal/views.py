@@ -230,6 +230,7 @@ def userctrl_doreg(request):
       if User.objects.filter(username=username).count():
          # No
          regResult = 1
+         msg = "That username is already in use. Please choose another."
       else:
          # Yes, save the new user account.
          newUser = User.objects.create_user(username, email, password)
@@ -244,14 +245,22 @@ def userctrl_doreg(request):
                # Yes, log them in.
                login(request, loggedInUser)
                regResult = 0
+               msg = str(r"Registration successful!  You have been logged in."+
+                          "Redirecting to home page...")
             else:
                # No, their account is inactive.
                regResult = 2
+               msg = str(r"Sorry, something went wrong during"+
+                        "registration. =(  Please try again...")
+                        
          else:
             # No, something is wrong!  HALP!
             regResult = 2
+            msg = str(r"Sorry, something went wrong during"+
+                        "registration. =(  Please try again...")
 
-      return render(request, 'userctrl/registration_result.html', {'reg_result':regResult})
+      context = {'reg_result' : regResult, 'msg' : msg}
+      return render(request, 'userctrl/logreg_result.html', context)
 
 #---- User Log In
 def userctrl_login(request):
@@ -266,11 +275,19 @@ def userctrl_login(request):
             #user(request, user)
             return redirect(request.META['HTTP_REFERER'])
             #return redirect('/djangofett/user/'+str(user.id))
-         #else:
-      # Return a 'disabled account' error message
+         else:
+            msg = "Sorry, but your account is disabled."
+            regResult = 1
+            context = {'reg_result' : regResult, 'msg' : msg}
+            return render(request, 'userctrl/logreg_result.html',context)
+      # Return a 'disabled account' error message CHECK
       else:
-         return redirect('/fettdb/placeholder')
-      # Return an 'invalid login' error message.
+         msg = str(r"Either the password or username you entered was invalid."+
+                " Please try again.")
+         regResult = 1
+         context = {'reg_result' : regResult, 'msg' : msg}
+         return render(request, 'userctrl/logreg_result.html',context)
+      # Return an 'invalid login' error message. CHECK
 
 #---- User Log Out
 def userctrl_logout(request):
