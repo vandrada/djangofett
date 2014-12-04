@@ -35,6 +35,7 @@ class User(AuthUser):
     """
     Currently extends from auth.models.User
     Required fields are username, email, password
+    TODO: Define method to discern class based on karma count.
     """
     NOOB = 'NB'
     SAMARITAN = 'SM'
@@ -44,8 +45,8 @@ class User(AuthUser):
                     (SAMARITAN, "Samaritan"),
                     (PRO, "Professional"),
                     (GOAT, "Greatest of all time"))
-
-    rank = models.CharField(max_length=2, choices=RANK_CHOICES, default=NOOB)
+    #max_length for rank changed to 30 to allow full names to display.
+    rank = models.CharField(max_length=30, choices=RANK_CHOICES, default=NOOB)
     about = models.CharField(max_length=200, default="")
 
     def __str__(self):
@@ -67,7 +68,20 @@ class User(AuthUser):
         report_count += sum([com.reported_count
                              for com in self.comment_set.all()])
         return report_count
-
+    """
+    Discern the user's rank.
+    """
+    def assert_rank(self):
+        karma = self.get_karma()
+        if karma < 10:
+            self.rank = self.NOOB
+        elif karma < 20:
+            self.rank = self.SAMARITAN
+        elif karma < 30:
+            self.rank = self.PRO
+        else:
+            self.rank = self.GOAT
+        return self.rank
 
 class Answer(models.Model):
     answer_text = models.CharField(max_length=50, default="")

@@ -3,7 +3,8 @@
 {% block formspot %}
 <form action={% url 'portal.views.edit_about' user.id %} method="post" value="Hi">
 {% csrf_token %}
+<!--TODO: Have the form contain preliminary text as well, from whatever was there before.-->
 {{ form|bootstrap }}
-<input type="submit" value="Submit"/>
+<button type="submit" class="btn btn-default">Submit</button>
 </form>
 {% endblock %}

@@ -109,11 +109,11 @@ def review_create(request, game_id):
             review.game_id = Game.objects.get(id=game_id)
             review.save()
             return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))
-    else:
-        form = ReviewForm()
-        return render(request, 'portal/review_edit.html', {
-            'form' : form,
-        })
+    #else:
+    form = ReviewForm()
+    return render(request, 'portal/review_edit.html', {
+        'form' : form,
+    })
 
 def review_edit(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
@@ -139,15 +139,7 @@ def review_edit(request, review_id):
 def user(request, user_id):
     print("Within user")
     u = User.objects.get(id=user_id)
-    rank = ""
-    if u.rank == "NB":
-        rank = "Noob"
-    elif u.rank == "SM":
-        rank = "Samaritan"
-    elif u.rank == "PR":
-        rank = "Professional"
-    else:
-        rank = "GOAT"
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
                'about': u.about}
@@ -164,9 +156,14 @@ def edit_about(request, user_id):
             usr.save()
             return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
             #render(request, 'portal/user.html', context)
-    else:
-        form = UserForm()
-        context = {'form': form, 'about': u.about}
+    #If the form isn't valid or if the method isn't post, falling through
+    #to this block is sufficient.
+    form = UserForm()
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
+    context = {'karma': u.get_karma(),
+               'rank': rank,
+               'form': form, 
+               'about': u.about}
     return render(request, 'portal/edit_about.html', context)
 
 def vote(request, question_id, answer_id):
