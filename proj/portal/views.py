@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.urlresolvers import reverse
 from portal.models import Game, Question, Review, Answer, PollResponse, User
 from portal.models import ReviewResponse, Comment
-from portal.forms import ReviewForm, CommentForm, UserForm
+from portal.forms import ReviewForm, CommentForm, AboutForm, PhotoForm
 import random
 import datetime
 from django.utils import timezone
@@ -89,7 +91,7 @@ def review(request, review_id):
                 comment = form.save(commit=False)
                 comment.user_id = request.user
                 comment.review_id = Review.objects.get(id=review_id)
-                comment.timestamp = timezone.now() #Gives weird time.
+                comment.timestamp = timezone.now() 
                 comment.save()
         return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
     else:
@@ -137,19 +139,19 @@ def review_edit(request, review_id):
         return home(request) #Placeholder: tell the usr they can't do this.
 
 def user(request, user_id):
-    print("Within user")
     u = User.objects.get(id=user_id)
     rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
-               'about': u.about}
+               'about': u.about,
+               'image': u.image}
     return render(request, 'portal/user.html', context)
 
 #Allow the user to edit their about me via the edit button.
 def edit_about(request, user_id):
     u = get_object_or_404(User, pk=user_id)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=u)
+        form = AboutForm(request.POST, instance=u)
         if form.is_valid():
             usr = form.save(commit=False)
             usr.about = u.about
@@ -158,13 +160,39 @@ def edit_about(request, user_id):
             #render(request, 'portal/user.html', context)
     #If the form isn't valid or if the method isn't post, falling through
     #to this block is sufficient.
-    form = UserForm()
+    form = AboutForm()
     rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
                'form': form, 
-               'about': u.about}
+               'about': u.about,
+               'image': u.image}
     return render(request, 'portal/edit_about.html', context)
+
+"""
+Allow the user to upload different pictures via the upload button.
+This one is necessary since there's no way to differentiate between an about
+request and an edit photo request, hence the different functions.
+"""
+def edit_photo(request, user_id):
+    u = get_object_or_404(User, pk=user_id)
+    #u = request.user
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES, instance=u)
+        if form.is_valid(): #So this does happen. Hm.It always returns with the stupid default photo.
+            usr = form.save(commit=False)
+            usr.image = request.FILES['image']
+            usr.save()
+            return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
+    form = PhotoForm()
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
+    context = {'karma': u.get_karma(),
+               'rank': rank,
+               'form': form, 
+               'image': u.image,
+               'about': u.about}
+    #TODO: Don't forget to make the html for the photo-changing...
+    return render(request, 'portal/edit_photo.html', context)
 
 def vote(request, question_id, answer_id):
     question = Question.objects.get(id=question_id)

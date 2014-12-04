@@ -36,10 +36,11 @@
             </button>
           </form>
           <form>
-            <!-- TODO add ability to post a comment -->
+            <!-- Deprecated: Form for comment submission already exists
             <button type="button" class="btn btn-default" title="add comment">
               <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
+            -->
           </form>
           <form action={% url 'portal.views.review_report' review.id %} method="post">
             {% csrf_token %}

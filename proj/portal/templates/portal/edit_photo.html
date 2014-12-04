@@ -1,0 +1,10 @@
+{% extends "portal/user.html" %}
+{% load bootstrap %}
+{% block photoshop %}
+<form enctype="multipart/form-data"
+action="{% url 'portal.views.edit_photo' user.id %}" method="post" value="Photo upload">
+{% csrf_token %}
+{{ form|bootstrap }}
+<button type="submit" class="btn btn-default">Submit</button>
+</form>
+{% endblock %}

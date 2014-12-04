@@ -29,5 +29,6 @@ urlpatterns = patterns('',
     url(r'^userctrl/login/', views.userctrl_login, name='usr_login'),
     url(r'^userctrl/logout/', views.userctrl_logout, name='usr_logout'),
     url(r'^user/(?P<user_id>\d+)/$', views.user, name='user'),
-    url(r'^user/(?P<user_id>\d+)/about/', views.edit_about, name='about'),
+    url(r'^user/(?P<user_id>\d+)/about/$', views.edit_about, name='about'),
+    url(r'^user/(?P<user_id>\d+)/photo/$', views.edit_photo, name='photo'),
 )

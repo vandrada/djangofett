@@ -8,6 +8,7 @@ This form is derived from 'Review', since that model has all the fields
 this one really needs.
 """
 class ReviewForm(ModelForm):
+    #body = forms.CharField(label="")
     class Meta:
         model = Review
         #Title is a simple, small form, body is the whole md widget.
@@ -16,25 +17,28 @@ class ReviewForm(ModelForm):
 """
 A form derived from Comment. Will represent both a textbox for the user
 to input data as well as the test from saved comments.
-NOTE: Make "Body" not display.
 """
 class CommentForm(ModelForm):
     #This assignment is for specifying the dimensions of the input form.
     #It also clears the dumb default 'Body' label.
-    body = forms.CharField(widget=forms.Textarea, label='')
+    body = forms.CharField(widget=forms.Textarea(attrs={'rows':2}), label='')
     class Meta:
         model = Comment
         fields = ['body']
 
 """
-Derives from User. 
+Derives from User. Utilized for changing 'about me' info.
 """
-class UserForm(ModelForm):
-#(widget=forms.Textarea(attrs={'cols': 400, 'rows': 2, 'title': "Post a comment",
-                           # 'label': "broo"}))
-
+class AboutForm(ModelForm):
     #Label nullified to allow for customized labelling.
-    about = forms.CharField(widget=forms.Textarea, label='')
+    about = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), label='')
     class Meta:
         model = User
-        fields = ['about']
+        fields = ['about'] #TODO: Just specify single form elements with bootstrapform.
+"""
+Yet another modelform derived from User. This one handles images.
+"""
+class PhotoForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['image']
