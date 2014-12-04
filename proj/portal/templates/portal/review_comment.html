@@ -1,0 +1,18 @@
+{% extends "portal/review.html" %}
+{% load bootstrap %}
+{% block errspot %}
+   {% if msg %}
+   <h3>{{ msg }}</h3>
+   {% endif %}
+{% endblock %}
+{% block formspot %}
+   <form action={% url 'portal.views.review' review.id %} method="post">
+   {% csrf_token %}
+   {{ form|bootstrap }}
+   <button type="submit" class="btn btn-default">Post Comment</button>
+   <br>
+   </form>
+{% for comment in comments %} <!--This will stay, above will go.-->
+      <p>{{comment.user_id}} said: {{comment.body}} on {{comment.timestamp}}</p>
+{% endfor %}
+{% endblock %}

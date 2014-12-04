@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.urlresolvers import reverse
 from portal.models import Game, Question, Review, Answer, PollResponse, User
-from portal.forms import ReviewForm
+from portal.models import ReviewResponse, Comment
+from portal.forms import ReviewForm, CommentForm, AboutForm, PhotoForm
 import random
 import datetime
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from collections import namedtuple
+import sys
 
 
 # Create your views here.
@@ -20,29 +24,82 @@ def game(request, game_id):
 def home(request):
     rand = random.randint(1, len(Question.objects.all()))
     random_question = Question.objects.get(id=rand)
-    recent_reviews = Review.objects.filter(pub_date__lt=timezone.now() -
-                                           datetime.timedelta(days=1))
+    recent_reviews = Review.objects.all().order_by('-pub_date')[:10]
+    #recent_reviews = Review.objects.filter(pub_date__lt=timezone.now() -
+    #                                        datetime.timedelta(days=1))
     context = {'question': random_question, 'reviews': recent_reviews}
     return render(request, 'portal/home.html', context)
 
-
+#Deprecated? I'm keeping it here just in case.
+"""
 def review(request, review_id):
-    context = {'review': Review.objects.get(id=review_id)}
+    review = Review.objects.get(id=review_id)
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+    print(comment_list) #Just a debug statement..
+    context = {'review': Review.objects.get(id=review_id),
+                'comments': comment_list}
     return render(request, 'portal/review.html', context)
-
+"""
 
 def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
-    review.inc_reports()
-    context = {'review': Review.objects.get(id=review_id)}
-    return redirect('portal/review.html', )
+    msg = False
+    form = CommentForm()
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+    #Prevent multiple downvotes & anonymous voting
+    if (request.user.__str__() != "AnonymousUser"):
+        if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+                review.inc_reports()
+                r = ReviewResponse(review=review, user=request.user)
+                r.save()
+        else:
+            msg = "An upvote/report from this user has already been submitted.\n"
+    else:
+        msg = "Please log in to upvote/report.\n"
+    context = {'review': Review.objects.get(id=review_id), 
+            'msg' : msg, 'form': form, 'comments': comment_list}
+    #return redirect('/djangofett/review/{}'.format(review_id))
+    return render(request, 'portal/review_comment.html', context)
 
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
-    review.inc_karma()
-    context = {'review': Review.objects.get(id=review_id)}
-    return redirect('/djangofett/review/{}'.format(review_id))
+    msg = False
+    form = CommentForm()
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+    #Prevent multiple upvotes & anonymous voting
+    if (request.user.__str__() != "AnonymousUser"):
+        if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
+            review.inc_karma()
+            r = ReviewResponse(review=review, user=request.user)
+            r.save()
+        else:
+            msg = "An upvote/report from this user has already been submitted.\n"
+    else:
+        msg = "Please log in to upvote/report.\n"
+    context = {'review': Review.objects.get(id=review_id),
+               'msg' : msg, 'form': form, 'comments': comment_list}
+    return render(request, 'portal/review_comment.html', context)
+
+#Allows a user to write comments on review pages.
+def review(request, review_id):
+    review = Review.objects.get(id=review_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if request.user.__str__() != "AnonymousUser":
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user_id = request.user
+                comment.review_id = Review.objects.get(id=review_id)
+                comment.timestamp = timezone.now() 
+                comment.save()
+        return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
+    else:
+        form = CommentForm()
+        comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+        return render(request, 'portal/review_comment.html', {
+            'form' : form, 'review' : review, 'comments': comment_list})
+        
 
 def review_create(request, game_id):
     if request.method == 'POST':
@@ -54,11 +111,11 @@ def review_create(request, game_id):
             review.game_id = Game.objects.get(id=game_id)
             review.save()
             return HttpResponseRedirect('/djangofett/review/{}'.format(review.id))
-    else:
-        form = ReviewForm()
-        return render(request, 'portal/review_edit.html', {
-            'form' : form,
-        })
+    #else:
+    form = ReviewForm()
+    return render(request, 'portal/review_edit.html', {
+        'form' : form,
+    })
 
 def review_edit(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
@@ -83,37 +140,79 @@ def review_edit(request, review_id):
 
 def user(request, user_id):
     u = User.objects.get(id=user_id)
-    rank = ""
-    if u.rank == "NB":
-        rank = "Noob"
-    elif u.rank == "SM":
-        rank = "Samaritan"
-    elif u.rank == "PR":
-        rank = "Professional"
-    else:
-        rank = "GOAT"
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
-               'about': u.about}
+               'about': u.about,
+               'image': u.image}
     return render(request, 'portal/user.html', context)
-    pass
 
+#Allow the user to edit their about me via the edit button.
+def edit_about(request, user_id):
+    u = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        form = AboutForm(request.POST, instance=u)
+        if form.is_valid():
+            usr = form.save(commit=False)
+            usr.about = u.about
+            usr.save()
+            return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
+            #render(request, 'portal/user.html', context)
+    #If the form isn't valid or if the method isn't post, falling through
+    #to this block is sufficient.
+    form = AboutForm()
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
+    context = {'karma': u.get_karma(),
+               'rank': rank,
+               'form': form, 
+               'about': u.about,
+               'image': u.image}
+    return render(request, 'portal/edit_about.html', context)
+
+"""
+Allow the user to upload different pictures via the upload button.
+This one is necessary since there's no way to differentiate between an about
+request and an edit photo request, hence the different functions.
+"""
+def edit_photo(request, user_id):
+    u = get_object_or_404(User, pk=user_id)
+    #u = request.user
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES, instance=u)
+        if form.is_valid(): #So this does happen. Hm.It always returns with the stupid default photo.
+            usr = form.save(commit=False)
+            usr.image = request.FILES['image']
+            usr.save()
+            return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
+    form = PhotoForm()
+    rank = dict(u.RANK_CHOICES).get(u.assert_rank())
+    context = {'karma': u.get_karma(),
+               'rank': rank,
+               'form': form, 
+               'image': u.image,
+               'about': u.about}
+    #TODO: Don't forget to make the html for the photo-changing...
+    return render(request, 'portal/edit_photo.html', context)
 
 def vote(request, question_id, answer_id):
     question = Question.objects.get(id=question_id)
-
+    msg = False #Utilize for convenient error msging.
     answer = get_object_or_404(Answer, pk=answer_id)
-    if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
-        answer.inc()
-        p = PollResponse(question=question, user=request.user)
-        p.save()
-        #PollResponse.objects.create(question=question, user=request.user)
-        print("Voted")
-    #else: NOTE: Have message like "A vote from this user has already been registered"
+    if (request.user.__str__() != "AnonymousUser"):
+        if PollResponse.objects.all().filter(question=question, user=request.user).count() == 0:
+            answer.inc()
+            p = PollResponse(question=question, user=request.user)
+            p.save()
+            #PollResponse.objects.create(question=question, user=request.user)
+            print("Voted")
+        else: 
+            msg = "A vote from this user has already been registered."
+    else: 
+        msg = "Please log in to vote."
     # calculate the highest after the model has been updated
     highest = question.answer_set.order_by('vote_count').reverse()[0]
     rest = question.answer_set.order_by('vote_count').reverse()[1:]
-    context = {'question': question, 'highest': highest, 'rest': rest}
+    context = {'question': question, 'highest': highest, 'rest': rest, 'msg': msg}
     return render(request, 'portal/vote.html', context)
 
 
@@ -181,6 +280,7 @@ def userctrl_doreg(request):
       if User.objects.filter(username=username).count():
          # No
          regResult = 1
+         msg = "That username is already in use. Please choose another."
       else:
          # Yes, save the new user account.
          newUser = User.objects.create_user(username, email, password)
@@ -195,14 +295,22 @@ def userctrl_doreg(request):
                # Yes, log them in.
                login(request, loggedInUser)
                regResult = 0
+               msg = str(r"Registration successful!  You have been logged in."+
+                          "Redirecting to home page...")
             else:
                # No, their account is inactive.
                regResult = 2
+               msg = str(r"Sorry, something went wrong during"+
+                        "registration. =(  Please try again...")
+                        
          else:
             # No, something is wrong!  HALP!
             regResult = 2
+            msg = str(r"Sorry, something went wrong during"+
+                        "registration. =(  Please try again...")
 
-      return render(request, 'userctrl/registration_result.html', {'reg_result':regResult})
+      context = {'reg_result' : regResult, 'msg' : msg}
+      return render(request, 'userctrl/logreg_result.html', context)
 
 #---- User Log In
 def userctrl_login(request):
@@ -214,17 +322,27 @@ def userctrl_login(request):
       if user is not None:
          if user.is_active:
             login(request, user)
-            return redirect('/fettdb/placeholder')
-         #else:
-      # Return a 'disabled account' error message
+            #user(request, user)
+            return redirect(request.META['HTTP_REFERER'])
+            #return redirect('/djangofett/user/'+str(user.id))
+         else:
+            msg = "Sorry, but your account is disabled."
+            regResult = 1
+            context = {'reg_result' : regResult, 'msg' : msg}
+            return render(request, 'userctrl/logreg_result.html',context)
+      # Return a 'disabled account' error message CHECK
       else:
-         return redirect('/fettdb/placeholder')
-      # Return an 'invalid login' error message.
+         msg = str(r"Either the password or username you entered was invalid."+
+                " Please try again.")
+         regResult = 1
+         context = {'reg_result' : regResult, 'msg' : msg}
+         return render(request, 'userctrl/logreg_result.html',context)
+      # Return an 'invalid login' error message. CHECK
 
 #---- User Log Out
 def userctrl_logout(request):
    logout(request)
-   return redirect('/fettdb/placeholder')
+   return redirect('/djangofett/')
 
 
 #----- END USER CONTROL VIEWS

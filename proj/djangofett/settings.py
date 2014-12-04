@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'mathfilters',
     'pagedown', #For markdown editor
     'markdown_deux',
+    'bootstrapform', #For bootstrap forms
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,7 +75,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/North_Dakota/New_Salem'
 
 USE_I18N = True
 

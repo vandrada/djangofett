@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} DjangoFett - Registration {% endblock %}
+{% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
+{% block content %}
+
+<h1>Registration</h1>
+
+{% if reg_result == 0 %}
+<p>
+   <!--Registration successful!  You have been logged in.  Redirecting to home page...-->
+   {{msg}}
+</p>
+<head>
+   <META http-equiv="refresh" content="5;URL=/djangofett/">
+</head>
+{% elif reg_result == 1 %}
+<p>
+   <!--That username is already in use.  Please choose another.-->
+   {{msg}}
+</p>
+<!--Now obsolete. Keeping it here just in case, though.
+{% elif reg_result == 2 %}
+<p>
+   <!--Sorry, something went wrong during registration.  =(  Please try again...-->
+   {{msg}}
+</p>
+{% endif %}
+-->
+{% endblock %}

@@ -1,12 +1,50 @@
 {% extends "base.html" %}
 <!-- {karma, rank, about}>-->
 {% load markdown_deux_tags %}
+{% load staticfiles %}
 {% block title %} {{ user.username }} {% endblock %}
+{% block image %} {{MEDIA_URL}}{{ user.image }} {% endblock %}
 {% block content %}
+<style>
+#edit { /*I had to position the button in a ghetto way */
+   position: relative;
+   top: -34px;
+}
+#photo { /*This is bad practice blah blah blah*/
+   position: relative;
+   top: 13px;
+   left: -950px;
+}
+#uname{
+   position: relative;
+   top: -30px;
+}
+</style>
+
 <br>
-<div class="page-header">
-  <h1> {{ user.username }}
-  <span class="label label-success pull-right" title="karma points"> {{ karma }}</span>
+<div class="page-header"> <!--NOTE: The URL is just a placeholder.-->
+  <h1>  
+   <div class="media">
+    <a class="media-left pull-left", href="#">
+     {% if not image %}
+     <img src="{% static "ava_placeholder.png" %}" width="209" height="241" alt="avatar"</img>
+     {% else %}
+     <img src="{{MEDIA_URL}}{{ image }}" width="209" height="241" alt="avatar"</img>
+     {% endif %}
+     {% block photoshop %}{% endblock %}
+    </a>
+    <div class="media-body">
+     {{ user.username }}
+    </div>
+   </div>
+    <span class="label label-success pull-up" title="karma points">Karma: {{ karma }}</span>
+<a href={% url 'portal.views.edit_photo' user.id %}> 
+      <button class="btn btn-default pull-right" type="submit" title="Upload a photo"
+      id="photo">
+         <span class="glyphicon glyphicon-upload"</span>
+         </button>
+        </a>
+
   </h1>
   <div class="list-group">
     <a class="list-group-item">
@@ -16,10 +54,17 @@
       <h4>Rank: {{ rank }}</h4>
     </a>
     <a class="list-group-item">
-      <h4>About Me:</h4>
+   <h4>About Me:</h4>
+   {% block formspot %} <!--Include/Exclude the "about" text when the user is utilizing a form-->
       {{ about }}
+   {% endblock %}
+      <a href={% url 'portal.views.edit_about' user.id %}> 
+      <button class="btn btn-default pull-right" type="submit" title="edit" id="edit">
+         <span class="glyphicon glyphicon-edit"</span>
+         </button>
+        </a>
     </a>
-  <div/>
+  </div>
 </div>
 <h1> Reviews</h1>
 <ul class="list-group">

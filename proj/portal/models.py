@@ -16,6 +16,11 @@ class PollResponse(models.Model):
     question = models.ForeignKey('Question')
     user = models.ForeignKey('auth.User')
 
+#Log user's responses to reviews (karma votes/reports)
+class ReviewResponse(models.Model):
+    review = models.ForeignKey('Review')
+    user = models.ForeignKey('auth.User')
+
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = DateTimeField("Time of poll creation")
@@ -30,6 +35,7 @@ class User(AuthUser):
     """
     Currently extends from auth.models.User
     Required fields are username, email, password
+    TODO: Define method to discern class based on karma count.
     """
     NOOB = 'NB'
     SAMARITAN = 'SM'
@@ -39,9 +45,10 @@ class User(AuthUser):
                     (SAMARITAN, "Samaritan"),
                     (PRO, "Professional"),
                     (GOAT, "Greatest of all time"))
-
-    rank = models.CharField(max_length=2, choices=RANK_CHOICES, default=NOOB)
+    #max_length for rank changed to 30 to allow full names to display.
+    rank = models.CharField(max_length=30, choices=RANK_CHOICES, default=NOOB)
     about = models.CharField(max_length=200, default="")
+    image = models.ImageField(upload_to="games/", null=True)
 
     def __str__(self):
         return self.username
@@ -62,7 +69,20 @@ class User(AuthUser):
         report_count += sum([com.reported_count
                              for com in self.comment_set.all()])
         return report_count
-
+    """
+    Discern the user's rank.
+    """
+    def assert_rank(self):
+        karma = self.get_karma()
+        if karma < 10:
+            self.rank = self.NOOB
+        elif karma < 20:
+            self.rank = self.SAMARITAN
+        elif karma < 30:
+            self.rank = self.PRO
+        else:
+            self.rank = self.GOAT
+        return self.rank
 
 class Answer(models.Model):
     answer_text = models.CharField(max_length=50, default="")
@@ -121,11 +141,11 @@ class Comment(models.Model):
     """
     Comments on reviews...and perhaps more.
     """
-    body = models.CharField(max_length=1000)  # Same length as last.fm comments
-    user_id = models.ForeignKey(User)
+    body = models.TextField(max_length=1000)  # Same length as last.fm comments
+    user_id = models.ForeignKey('auth.User')
     review_id = models.ForeignKey(Review)
-    timestamp = DateTimeField()
+    timestamp = DateTimeField(default=timezone.now)
     reported_count = models.IntegerField(default=0)
-
+    #NOTE: Probably unnecessary.
     def __str__(self):
         return "{}... by {}".format(self.body[:10], self.user_id)

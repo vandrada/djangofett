@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_deux_tags %}
 <!-- { question, reviews } -->
 {% block title %}DjangoFett{% endblock %}
 {% block content %}
@@ -21,8 +22,8 @@
               title="{{ rev.game_id.title }}">
           </a>
           <div class="media-body">
-            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a></h3>
-            {{ rev.preview }}
+            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a><small>{{ rev.author.username }}</small></h3>
+            {{ rev.preview|markdown }}
           </div>
         </li>
         {% endfor %}
