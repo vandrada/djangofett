@@ -43,6 +43,7 @@ def review_report(request, review_id):
     review = Review.objects.get(id=review_id)
     msg = False
     form = CommentForm()
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
     #Prevent multiple downvotes & anonymous voting
     if (request.user.__str__() != "AnonymousUser"):
         if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
@@ -54,7 +55,7 @@ def review_report(request, review_id):
     else:
         msg = "Please log in to upvote/report.\n"
     context = {'review': Review.objects.get(id=review_id), 
-            'msg' : msg, 'form': form}
+            'msg' : msg, 'form': form, 'comments': comment_list}
     #return redirect('/djangofett/review/{}'.format(review_id))
     return render(request, 'portal/review_comment.html', context)
 
@@ -63,6 +64,7 @@ def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
     msg = False
     form = CommentForm()
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
     #Prevent multiple upvotes & anonymous voting
     if (request.user.__str__() != "AnonymousUser"):
         if ReviewResponse.objects.all().filter(review=review, user=request.user).count() == 0:
@@ -74,7 +76,7 @@ def review_karma(request, review_id):
     else:
         msg = "Please log in to upvote/report.\n"
     context = {'review': Review.objects.get(id=review_id),
-               'msg' : msg, 'form': form}
+               'msg' : msg, 'form': form, 'comments': comment_list}
     return render(request, 'portal/review_comment.html', context)
 
 #Allows a user to write comments on review pages.

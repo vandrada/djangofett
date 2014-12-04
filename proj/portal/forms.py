@@ -20,9 +20,8 @@ NOTE: Make "Body" not display.
 """
 class CommentForm(ModelForm):
     #This assignment is for specifying the dimensions of the input form.
-    body = forms.CharField(widget=forms.Textarea(attrs={'cols': 400, 'rows': 2, 'title': "Post a comment",
-                            'label': "broo"}))
-                            
+    #It also clears the dumb default 'Body' label.
+    body = forms.CharField(widget=forms.Textarea, label='')
     class Meta:
         model = Comment
         fields = ['body']
@@ -31,6 +30,11 @@ class CommentForm(ModelForm):
 Derives from User. 
 """
 class UserForm(ModelForm):
+#(widget=forms.Textarea(attrs={'cols': 400, 'rows': 2, 'title': "Post a comment",
+                           # 'label': "broo"}))
+
+    #Label nullified to allow for customized labelling.
+    about = forms.CharField(widget=forms.Textarea, label='')
     class Meta:
         model = User
         fields = ['about']
