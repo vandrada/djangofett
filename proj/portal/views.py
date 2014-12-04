@@ -3,7 +3,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from portal.models import Game, Question, Review, Answer, PollResponse, User
 from portal.models import ReviewResponse, Comment
-from portal.forms import ReviewForm, CommentForm
+from portal.forms import ReviewForm, CommentForm, UserForm
 import random
 import datetime
 from django.utils import timezone
@@ -57,8 +57,6 @@ def review_report(request, review_id):
             'msg' : msg, 'form': form}
     #return redirect('/djangofett/review/{}'.format(review_id))
     return render(request, 'portal/review_comment.html', context)
-    #else: TODO
-    #    return same page with popup "Please log in to downvote"
 
 
 def review_karma(request, review_id):
@@ -78,9 +76,6 @@ def review_karma(request, review_id):
     context = {'review': Review.objects.get(id=review_id),
                'msg' : msg, 'form': form}
     return render(request, 'portal/review_comment.html', context)
-    #return redirect('/djangofett/review/{}'.format(review_id))
-    #else: TODO
-    #    return same page with popup "Please log in to upvote"
 
 #Allows a user to write comments on review pages.
 def review(request, review_id):
@@ -96,15 +91,10 @@ def review(request, review_id):
                 comment.save()
         return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
     else:
-        #Placeholder to test if the comment form actually manifests.
-        print('doodad')
         form = CommentForm()
         comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
         return render(request, 'portal/review_comment.html', {
             'form' : form, 'review' : review, 'comments': comment_list})
-    """else:
-        form = CommentForm()
-        return render(request, 'portal/review.html', {"""
         
 
 def review_create(request, game_id):
@@ -145,6 +135,7 @@ def review_edit(request, review_id):
         return home(request) #Placeholder: tell the usr they can't do this.
 
 def user(request, user_id):
+    print("Within user")
     u = User.objects.get(id=user_id)
     rank = ""
     if u.rank == "NB":
@@ -159,8 +150,22 @@ def user(request, user_id):
                'rank': rank,
                'about': u.about}
     return render(request, 'portal/user.html', context)
-    pass
 
+#Allow the user to edit their about me via the edit button.
+def edit_about(request, user_id):
+    u = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=u)
+        if form.is_valid():
+            usr = form.save(commit=False)
+            usr.about = u.about
+            usr.save()
+            return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
+            #render(request, 'portal/user.html', context)
+    else:
+        form = UserForm()
+        context = {'form': form, 'about': u.about}
+    return render(request, 'portal/edit_about.html', context)
 
 def vote(request, question_id, answer_id):
     question = Question.objects.get(id=question_id)

@@ -1,0 +1,9 @@
+{% extends "portal/user.html" %}
+{% load bootstrap %}
+{% block formspot %}
+<form action={% url 'portal.views.edit_about' user.id %} method="post" value="Hi">
+{% csrf_token %}
+{{ form|bootstrap }}
+<input type="submit" value="Submit"/>
+</form>
+{% endblock %}

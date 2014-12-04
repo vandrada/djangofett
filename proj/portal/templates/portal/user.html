@@ -3,6 +3,13 @@
 {% load markdown_deux_tags %}
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
+<style>
+#edit { /*I had to position the button in a ghetto way */
+   position: relative;
+   top: -34px;
+}
+</style>
+
 <br>
 <div class="page-header">
   <h1> {{ user.username }}
@@ -16,8 +23,19 @@
       <h4>Rank: {{ rank }}</h4>
     </a>
     <a class="list-group-item">
+   {% block formspot %} <!--Include/Exclude the "about" text when the user is utilizing a form-->
       <h4>About Me:</h4>
       {{ about }}
+   {% endblock %}
+      <!-- TODO: Supply a button to redirect the user to a page with a form
+      to fill in their about-me.-->
+      <a href={% url 'portal.views.edit_about' user.id %}> 
+      <button class="btn btn-default pull-right" type="submit" title="edit" id="edit">
+         <span class="glyphicon glyphicon-edit"</span>
+         </button>
+        </a>
+        <!-- Display the form for 'about me' info  TODO: Try using this to override the "About me" entry!-->
+        <!-- block formspot endblock -->
     </a>
   <div/>
 </div>
