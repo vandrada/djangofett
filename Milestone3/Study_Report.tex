@@ -1,0 +1,63 @@
+
+\documentclass[11pt]{extarticle}
+\usepackage{times}
+
+\begin{document}
+\title{Study Report}
+\author{Sean Soderman\\
+      \and
+      Josh Smith
+}
+\date{\today}
+\maketitle
+
+\section*{Problem Identification}
+Participants were able to fulfill the tasks outlines by the scenarios. The most common error was not being able to
+find the title box on the review page. A similar problem occured when users submitted the review without a title
+and were not notified that their submission was invalid. The image upload button was also too small and|or ambiguous
+for the user to find. They would also try to create a review by clicking their profile page's review section
+header. When one of the "blind" participants attempted to register an account with a name that already existed,
+a very confusing error occured. Also, the top bar of the website was pushed down by an overly long username. This
+caused it to obscure the title form of the review page, further obfuscating it.
+\section*{Prioritization}
+\begin{itemize}
+\item Registration error.
+\item Title box finding when submitting review.
+\item Submitting review without title error message omission.
+\item Long usernames pushing down top bar.
+\item Ambiguous image upload button
+\item Profile page 'Review' section hovering.
+\end{itemize}
+\section*{Theorization: Reasons}
+\begin{itemize}
+\item Registration error: user name isn't checked against existing users.
+\item Title box finding when submitting review: It's not centered over body form.
+\item Submitting review without title error message omission: We don't check.
+\item Long usernames pushing down top bar: The username text is pushing down other elements.
+\item Ambiguous image upload button: It is quite small and tightly grouped near the avatar \& karma count.
+\item Profile page 'Review' section hovering: We asked them to review something and since they were already on their
+profile page, this was the first thing they went to.
+\end{itemize}
+
+\section*{Theorization: Solutions}
+\begin{itemize}
+\item Registration error: check user name against existing users.
+\item Title box finding when submitting review: Center the title box.
+\item Submitting review without title error message omission: Check for lack of form info in title.
+\item Long usernames pushing down top bar: Truncate the username.
+\item Ambiguous image upload button: Make icon larger, put it on the side of the avatar.
+\item Profile page 'Review' section hovering: No solution.
+\end{itemize}
+
+\section*{Successes}
+\begin{itemize}
+\item All tasks were accomplished.
+\item Users could easily find the search bar
+\item Users could also easily discover the about me edit button.
+\item Log in and register buttons were located in intuitive locations.
+\end{itemize}
+
+\section*{Uncertainty}
+We need actual blind people to participate in the study. The screen reader was difficult for sighted users to
+use. 
+\end{document}
