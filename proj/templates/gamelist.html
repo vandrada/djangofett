@@ -32,7 +32,7 @@
    </div>-->
 
    <div class="container">
-      <table id="gametable" class="table tablesorter">
+      <table id="gameTable" class="table sorttable">
          <thead>
             <tr class="active">
                <th>Title</th>
@@ -52,4 +52,14 @@
          </tbody>
       </table>
    </div>
+
+   <script>
+   $(document).ready(function(){
+      $('#gameTable').dataTable(
+         {
+            searching: false
+         }
+      );
+   });
+   </script>
 {% endblock %}
