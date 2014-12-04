@@ -1,0 +1,79 @@
+%"Study_Design.tex", by Sean Soderman
+%Outlines all the sorts of things we wish to consider for our user study
+
+\documentclass[11pt]{extarticle}
+\usepackage{times}
+
+\begin{document}
+\title{Study Design}
+\author{Sean Soderman\\ 
+        \and
+        Dylan Soderman
+}
+\date{\today}
+\maketitle
+
+\section*{The Why} %NOTE: Flip this with the Concerns
+The purpose for this usability study is to find out how comfortable people are with navigating the website. In 
+particular, we are evaluting how quickly our users can accomplish browsing-based tasks, as well as 
+\subsection*{Effects}
+We hope to fortify our website to better accomodate the needs of our users. In particular, we hope to minimize the
+difficulty of using the site's features, such as using the search function or uploading images. The thresholds
+we are defining that will let us know when things must be improved/changes are if people take longer than the
+allotted time (5 seconds) to complete a task. For blind users, this threshold will be increased by a factor of
+three. There will also be an error rate for these users that will allow us to ascertain the readability of our
+website's HTML (for screen readers). This may prompt us to improve the site's code using ARIA to make each element's
+purpose completely obvious to the user, regardless of sightedness.
+\subsection*{Flexibility \textit{(or how much can be changed)}}
+The less central elements of the website, such as the look of the search results can be modified to be more colorful
+and readable. The user's profile page can also accomodate pictures for each review that user has written, so that
+there is no ambiguity as to which game they wrote that review for. The search engine could be improved to allow
+searching by any paramater (number of reviews, by date published, or alphabetically). Also, the review page can
+include the title and or image of the game the user is reviewing so that if they take a break in the middle of
+reviewing it, they will not forget what game they were reviewing. The icons on the user's profile page can
+be exchanged for more intuitive ones using more traditional symbols. The about me can also be modified to
+retain its text until the user explicitly deletes it.
+\section*{The What: Concerns}
+We believe that our search engine may prove insufficient for savvier users' needs. This is since the engine
+only matches its input to the name of a game. It does not search for review titles, users, or comments made by
+a commenter. We are also slightly worried that our users may not understand the meaning of icons on their profile
+page, and that they may find the way that the text within their about me being deleted each time they edit
+it annoying. There is also the issue of there being no indication of what game the user is reviewing on the
+review page. Finally, we don't feel confident about the usability of our game lists, for they are ordered
+by release date rather than alphabetically.
+\subsection*{Goals}
+   \begin{itemize}
+   \item The user should be able to search for a game in less that five seconds.
+   \item The user should be able to find a game within a list of games for a certain console within 20 seconds.
+   \item The user will be able to edit their about me within 15 seconds.
+   \item The user will notify the test-giver how easy it was to modify their profile.
+   \end{itemize}
+\subsection*{Tasks}
+   \begin{itemize}
+   \item Look for the game Little Big Planet 2.
+   \item Register an account and set up your profile.
+   \item Look for a  game with more than 1 review.
+   \item Write about a game you recognize.
+   \end{itemize}
+\subsection*{Scenarios}
+   \subsubsection*{Create a profile}
+      You have just heard about the new website for all your game review needs, DjangoFett, and wanted
+      to start up a profile on the website. It would be most satisfying to have a fully customized profile.
+      You would like to be one of the first people to write a review on this
+      website. You have in mind a recent game you recognize.
+   \subsubsection*{Finding games}
+      Upon finishing your review, you wanted to check if the game Little Big Planet 2 had many reviews, since it is
+      rather popular. You are now wondering if there is a game that has at least more than 1 review
+      on the website. You let one of the reviewers know whether you agree or disagree with an up/down vote
+      and comment.
+\subsection*{Measurements}
+   \begin{itemize}
+   \item The amount of time a user takes to do a task will be recorded. 
+   \item Blind user's amount of mistakes will be tallied.
+   \item Whether a user used the search function or one of the game lists.
+   \item A 1-5 point value denoting the comfort level of the user as they wrote their review.
+   \end{itemize}
+\section*{How: Test Methods}
+   Since this website could be considered to be in an infant state of development, a diagnostic test
+   enacted upon the above concerns would be most appropriate.
+\end{document}
