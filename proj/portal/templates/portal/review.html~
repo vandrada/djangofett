@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+<!-- expects a review -->
+{% block title %} {{ review.title }} {% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div class="media">
+      <a class="pull-right" href={% url 'portal.views.game' review.game_id.id %}>
+      <img src="{{MEDIA_URL}}{{review.game_id.image}}" width="209" height="241" alt="...">
+    </a>
+    <h1>{{review.title}} <small>by {{ review.author_id }}</small></h1>
+    <h3>
+      {{ review.pub_date|date }}
+    </h3>
+    <h2>
+      <span class="label label-success" title="karma points"> {{ review.karma }}</span>
+      <span class="label label-danger" title="reports"> {{ review.reported_count }} </span>
+
+    <!-- Here goes an error message if someone who voted tries to do so again.-->
+    {% block errspot %}{% endblock %}
+      </h2>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+    </div>
+    <div class="panel-body">
+      {{ review.body|markdown }}
+    </div>
+    <div class="panel-footer">
+      <div class="btn-group">
+          <form action={% url 'portal.views.review_karma' review.id %} method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-default" title="give karma">
+              <span class="glyphicon glyphicon-thumbs-up"</span>
+            </button>
+          </form>
+          <form>
+            <!-- Deprecated: Form for comment submission already exists
+            <button type="button" class="btn btn-default" title="add comment">
+              <span class="glyphicon glyphicon-plus-sign"></span>
+            </button>
+            -->
+          </form>
+          <form action={% url 'portal.views.review_report' review.id %} method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-default" title="report">
+              <span class="glyphicon glyphicon-thumbs-down"></span>
+            </button>
+            </form>
+            
+      </div>
+    </div>
+  </div>
+   <!--- First display the form, then the comments -->
+   {% block formspot %}{% endblock %}
+{% endblock %}

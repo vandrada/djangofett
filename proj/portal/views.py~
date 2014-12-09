@@ -259,30 +259,6 @@ def game_list(request, platform_id):
 
    for game in results:
       game.review_count = Review.objects.filter(game_id=game.id).count()
-   
-   if platform_id == "pc":
-      context['meta_platform_title'] = "PC"
-
-   elif platform_id == "xbone":
-      context['meta_platform_title'] = "Xbox ONE"
-
-   elif platform_id == "xb360":
-      context['meta_platform_title'] = "Xbox 360"
-
-   elif platform_id == "ps4":
-      context['meta_platform_title'] = "Playstation 4"
-
-   elif platform_id == "ps3":
-      context['meta_platform_title'] = "Playstation 3"
-
-   elif platform_id == "wiiu":
-      context['meta_platform_title'] = "Wii U"
-
-   elif platform_id == "mobile":
-      context['meta_platform_title'] = "Mobile"
-
-   elif platform_id == "ps3":
-      context['meta_platform_title'] = "Playstation 3"
 
    context['game_list'] = results
    context['meta_mode'] = meta_mode
