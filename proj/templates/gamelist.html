@@ -2,6 +2,14 @@
 {% load staticfiles %}
 {% block title %} DjangoFett - [CONSOLE] {% endblock %}
 {% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
+{% block linksbefore %}
+
+{% endblock %}
+{% block linksafter %}
+   <link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css"></style>
+   <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+   <script type="text/javascript" src="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+{% endblock %}
 {% block content %}
 <style>
 .jumbotron {
@@ -32,12 +40,12 @@
    </div>-->
 
    <div class="container">
-      <table id="gameTable" class="table sorttable">
+      <table id="gameTable" style="padding-top: 10px;" class="col-md-12 table sorttable">
          <thead>
             <tr class="active">
                <th>Title</th>
-               <th class='col-md-3'>Num Reviews</th>
-               <th class='col-md-3'>Release Date</th>
+               <th>Num Reviews</th>
+               <th>Release Date</th>
             </tr>
          </thead>
          <tbody>
@@ -57,7 +65,12 @@
    $(document).ready(function(){
       $('#gameTable').dataTable(
          {
-            searching: false
+            searching: false,
+            "columns": [
+            null,
+            { "width": "20%" },
+            { "width": "20%" }
+            ]
          }
       );
    });

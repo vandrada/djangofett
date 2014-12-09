@@ -98,7 +98,7 @@ class Answer(models.Model):
         return "{}:{}".format(self.answer_text, self.vote_count)
 
 
-    
+
 class Game(models.Model):
     title = models.CharField(max_length=50)
     publisher = models.CharField(max_length=100)
@@ -108,14 +108,14 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
-     
+
     def get_absolute_url(self):
        return "/djangofett/game/%i/" % self.id
 
 
 class Review(models.Model):
     title = models.CharField(max_length=100)
-    body = models.TextField() 
+    body = models.TextField()
     author_id = models.ForeignKey('auth.User')
     game_id = models.ForeignKey('Game')
     pub_date = DateTimeField(default=timezone.now)
@@ -131,7 +131,7 @@ class Review(models.Model):
         self.save()
 
     def preview(self):
-        return self.body[:50] + "..."
+        return self.body[:350] + "..."
 
     def __str__(self):
         return "{}... by {}".format(self.title[:10], self.author_id)

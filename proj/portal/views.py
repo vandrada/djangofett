@@ -56,7 +56,7 @@ def review_report(request, review_id):
             msg = "An upvote/report from this user has already been submitted.\n"
     else:
         msg = "Please log in to upvote/report.\n"
-    context = {'review': Review.objects.get(id=review_id), 
+    context = {'review': Review.objects.get(id=review_id),
             'msg' : msg, 'form': form, 'comments': comment_list}
     #return redirect('/djangofett/review/{}'.format(review_id))
     return render(request, 'portal/review_comment.html', context)
@@ -91,7 +91,7 @@ def review(request, review_id):
                 comment = form.save(commit=False)
                 comment.user_id = request.user
                 comment.review_id = Review.objects.get(id=review_id)
-                comment.timestamp = timezone.now() 
+                comment.timestamp = timezone.now()
                 comment.save()
         return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
     else:
@@ -99,7 +99,7 @@ def review(request, review_id):
         comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
         return render(request, 'portal/review_comment.html', {
             'form' : form, 'review' : review, 'comments': comment_list})
-        
+
 
 def review_create(request, game_id):
     if request.method == 'POST':
@@ -164,7 +164,7 @@ def edit_about(request, user_id):
     rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
-               'form': form, 
+               'form': form,
                'about': u.about,
                'image': u.image}
     return render(request, 'portal/edit_about.html', context)
@@ -188,7 +188,7 @@ def edit_photo(request, user_id):
     rank = dict(u.RANK_CHOICES).get(u.assert_rank())
     context = {'karma': u.get_karma(),
                'rank': rank,
-               'form': form, 
+               'form': form,
                'image': u.image,
                'about': u.about}
     #TODO: Don't forget to make the html for the photo-changing...
@@ -205,9 +205,9 @@ def vote(request, question_id, answer_id):
             p.save()
             #PollResponse.objects.create(question=question, user=request.user)
             print("Voted")
-        else: 
+        else:
             msg = "A vote from this user has already been registered."
-    else: 
+    else:
         msg = "Please log in to vote."
     # calculate the highest after the model has been updated
     highest = question.answer_set.order_by('vote_count').reverse()[0]
@@ -296,13 +296,15 @@ def userctrl_doreg(request):
                login(request, loggedInUser)
                regResult = 0
                msg = str(r"Registration successful!  You have been logged in."+
-                          "Redirecting to home page...")
+                          "  Redirecting to home page...")
             else:
                # No, their account is inactive.
+               # Since they just registered, this should never happen.  This is
+               # here JUST IN CASE something weird happens.
                regResult = 2
                msg = str(r"Sorry, something went wrong during"+
                         "registration. =(  Please try again...")
-                        
+
          else:
             # No, something is wrong!  HALP!
             regResult = 2

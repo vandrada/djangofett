@@ -4,20 +4,18 @@
 <!-- { question, reviews } -->
 {% block title %}DjangoFett{% endblock %}
 {% block content %}
-<style>
-</style>
-  <center><img style="padding-top:50px;	padding-bottom:50px;" src="{% static "brand_logo.png" %}"></center>
+  <img style="margin-left:auto; margin-right:auto; display:block; padding-top:50px;	padding-bottom:50px;" src="{% static "brand_logo.png" %}">
   <!-- Left side -->
   <div class="col-md-9">
     <div class="panel panel-default">
-      <div style="background-color:#333333; color:white;" class="panel-heading">
+      <div style="background-color:#333333; color:white; border:1px solid black;" class="panel-heading fettshadow">
         Recent Reviews
       </div>
-      <div class="panel-body">
+      <div class="panel-body fettshadow" style="background-color:#fafafa;">
         <ul class="media-list">
         {% for rev in reviews %}
         <li class="media">
-          <a class="pull-left" href={% url 'portal.views.game' rev.game_id.id %}>
+          <a class="pull-left" style="border:1px solid black;" href={% url 'portal.views.game' rev.game_id.id %}>
             <img class="media-object" src="{{ MEDIA_URL}}{{rev.game_id.image}}"
             width="125" height="145"
               title="{{ rev.game_id.title }}">
@@ -27,7 +25,9 @@
             {{ rev.preview|markdown }}
           </div>
         </li>
+        <hr>
         {% endfor %}
+        <a href="#" class=".scrollup">Back to Top</a>
         </ul>
       </div>
     </div>
@@ -35,16 +35,16 @@
   <!-- Right Side -->
   <div class="col-md-3">
     <div class="panel panel-default">
-      <div style="background-color:#333333; color:white;" class="panel-heading">
+      <div style="background-color:#333333; color:white; border:1px solid black;" class="panel-heading fettshadow">
         Daily Poll
       </div>
-      <div class="panel-body">
-        <h3><a href={% url 'portal.views.result' question.id %}>{{ question.question_text }}</a></h3>
+      <div class="panel-body fettshadow" style="background-color:#fafafa;">
+        <h4><a href={% url 'portal.views.result' question.id %}>{{ question.question_text }}</a></h4>
         {% for answer in question.answer_set.all %}
         <div class="btn-group">
           <form action={% url 'portal.views.vote' question.id answer.id %} method="post">
             {% csrf_token %}
-            <button class="btn btn-primary btn-sm" id="vote_btn" role="button"> {{ answer.answer_text }} </button>
+            <button class="btn btn-default btn-sm" id="vote_btn" role="button"> {{ answer.answer_text }} </button>
           </form>
         </div>
         {% endfor %}
@@ -53,5 +53,27 @@
   </div>
   <script>
     $( '#navLogo' ).remove();
+
+    $(document).ready(function(){
+      //Click event to scroll to top
+      $('.scrollup').click(function(){
+        $('html, body').animate({scrollTop : 0},800);
+        return false;
+      });
+    });
+
+    var imageHeight = parseInt($('.headlogo').css('height')),
+    stopHeight=imageHeight / 2;
+
+    $(window).scroll(function(e) {
+      var windowScroll = $(window).scrollTop(),
+      newHeight = imageHeight - windowScroll*2;
+      if(newHeight>=stopHeight){
+        $('.headlogo').css("height", newHeight);
+      }
+      else{
+        $('.headlogo').css("height", stopHeight);
+      }
+    });
   </script>
 {% endblock %}

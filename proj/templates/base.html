@@ -8,15 +8,19 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>{% block title %} DjangoFett {% endblock %}</title>
 
+   {% block linksbefore %}
+   {% endblock %}
+
    <!-- Bootstrap -->
    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+   <link href="{% static "css/fettstyle.css" %}" rel="stylesheet">
    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-   <!-- OLD VERSION <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script> -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
    <!-- Include all compiled plugins (below), or include individual files as needed -->
-   <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
-   <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
    <script src="{% static "js/bootstrap.js" %}"></script>
+
+   {% block linksafter %}
+   {% endblock %}
 
    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +32,7 @@
 <body>
   <style>
     body {
-      padding-top: 51px;
+      padding-top: 46px;
     }
   </style>
    <!-- For animation -->
@@ -67,13 +71,14 @@
          box-shadow: 0px 3px 5px #333333;
       }
       .dropdown-menu {
-         width: 300px !important;
-	 background-color:#DDDDDD;
+         min-width: 300px !important;
+         background-color:#EEEEEE;
       }
+
    </style>
 
    <!-- Navigation Bar -->
-   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+   <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
          <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -150,26 +155,26 @@
                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Register</a>
                   <div class="dropdown-menu" role="menu" style="padding: 15px; padding-bottom:0px;">
-                     <form role="form" action="/djangofett/userctrl/doreg/" method="post">
+                     <form role="form" class="form-horizontal" action="/djangofett/userctrl/doreg/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-			   <label for="inpUsername">Username</label>
-                           <input type="text" class="form-control" id="inpUsername" name="reg_un" placeholder="Username" required>
+                           <label for="inpUsername" class="col-sm-4 control-label">Username</label>
+                           <div class="col-sm-8"><input type="text" class="form-control" id="inpUsername" name="reg_un" placeholder="Username" required></div>
                         </div>
                         <div class="form-group">
-			   <label for="inpPassword">Password</label>
-                           <input type="password" class="form-control" id="inpPassword" name="reg_pw" placeholder="Password" required>
+                           <label for="inpPassword" class="col-sm-4 control-label">Password</label>
+                           <div class="col-sm-8"><input type="password" class="form-control" id="inpPassword" name="reg_pw" placeholder="Password" required></div>
                         </div>
                         <div class="form-group">
-			   <label for="inpConfPass">Confirm Password</label>
-                           <input type="password" class="form-control" id="inpConfPass" name="reg_pw" placeholder="Confirm" required>
+                           <label for="inpConfPass" class="col-sm-4 control-label">Confirm</label>
+                           <div class="col-sm-8"><input type="password" class="form-control" id="inpConfPass" name="reg_pw" placeholder="Confirm" required></div>
                         </div>
                         <div class="form-group">
-			   <label for="inpEmail">Email Address</label>
-                           <input type="text" class="form-control" id="inpEmail" name="reg_email" placeholder="Email Address" required>
+                           <label for="inpEmail" class="col-sm-4 control-label">Email</label>
+                           <div class="col-sm-8"><input type="text" class="form-control" id="inpEmail" name="reg_email" placeholder="Email Address" required></div>
                         </div>
                         <div class="form-group">
-                           <button type="submit" class="btn btn-success btn-block">Register</button>
+                          <div class="col-sm-12"><button type="submit" class="btn btn-success btn-block">Register</button>
                         </div>
                      </form>
                   </div>
@@ -198,6 +203,14 @@
       $(function () {
          $('[data-toggle="tooltip"]').tooltip()
        })
+
+       $('.dropdown').on('show.bs.dropdown', function(e){
+         $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+       });
+
+       $('.dropdown').on('hide.bs.dropdown', function(e){
+         $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+       });
     </script>
 </body>
 </html>
