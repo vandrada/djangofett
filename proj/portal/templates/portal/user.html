@@ -31,20 +31,22 @@
      {% else %}
      <img src="{{MEDIA_URL}}{{ image }}" width="209" height="241" alt="avatar"</img>
      {% endif %}
-     {% block photoshop %}{% endblock %}
+     
     </a>
     <div class="media-body">
      {{ user.username }}
     </div>
    </div>
-    <span class="label label-success pull-up" title="karma points">Karma: {{ karma }}</span>
-<a href={% url 'portal.views.edit_photo' user.id %}> 
-      <button class="btn btn-default pull-right" type="submit" title="Upload a photo"
-      id="photo">
-         <span class="glyphicon glyphicon-upload"</span>
-         </button>
-        </a>
-
+    <!--NOTE: This should be included only if users have the capability of viewing other users.-->
+    <!--span class="label label-success pull-up" title="karma points">Karma: {{ karma }}</span-->
+{% block photoshop %}
+<a role="button" class="btn btn-default" href="{% url 'portal.views.edit_photo' user.id %}">
+Upload a Photo
+</a>
+      <button type="button" class="btn btn-default" type="submit" title="Upload a photo"
+      id="photo">Upload a photo</button>
+<span class="glyphicon glyphicon-upload pull-left" color="blue"></span>
+{% endblock %}
   </h1>
   <div class="list-group">
     <a class="list-group-item">

@@ -3,28 +3,28 @@
 {% block title %} DjangoFett - Registration {% endblock %}
 {% block image %} {{MEDIA_URL}}{{ game.image }} {% endblock %}
 {% block content %}
-
-<h1>Registration</h1>
-
-{% if reg_result == 0 %}
-<p>
-   <!--Registration successful!  You have been logged in.  Redirecting to home page...-->
-   {{msg}}
-</p>
-<head>
-   <META http-equiv="refresh" content="5;URL=/djangofett/">
-</head>
-{% elif reg_result == 1 %}
-<p>
-   <!--That username is already in use.  Please choose another.-->
-   {{msg}}
-</p>
-<!--Now obsolete. Keeping it here just in case, though.
-{% elif reg_result == 2 %}
-<p>
-   <!--Sorry, something went wrong during registration.  =(  Please try again...-->
-   {{msg}}
-</p>
-{% endif %}
--->
+  <div class="col-md-offset-3 col-md-6">
+    {% if reg_result == 0 %}
+    <div class="panel panel-success" style="margin-top:80px;">
+      <div class="panel-heading">
+        <h3 class="panel-title">Registration Successful</h3>
+      </div>
+      <div class="panel-body">
+        {{msg}}
+      </div>
+    </div>
+    <head>
+       <META http-equiv="refresh" content="5;URL=/djangofett/">
+    </head>
+    {% elif reg_result == 1 or reg_result == 2 %}
+    <div class="panel panel-danger" style="margin-top:80px;">
+      <div class="panel-heading">
+        <h3 class="panel-title">Registration Failed</h3>
+      </div>
+      <div class="panel-body">
+        {{msg}}
+      </div>
+    </div>
+    {% endif %}
+  </div>
 {% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+{% load staticfiles %}
+<!-- { question, reviews } -->
+{% block title %}DjangoFett{% endblock %}
+{% block content %}
+<style>
+</style>
+  <center><img style="padding-top:50px;	padding-bottom:50px;" src="{% static "brand_logo.png" %}"></center>
+  <!-- Left side -->
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div style="background-color:#333333; color:white;" class="panel-heading">
+        Recent Reviews
+      </div>
+      <div class="panel-body">
+        <ul class="media-list">
+        {% for rev in reviews %}
+        <li class="media">
+          <a class="pull-left" href={% url 'portal.views.game' rev.game_id.id %}>
+            <img class="media-object" src="{{ MEDIA_URL}}{{rev.game_id.image}}"
+            width="125" height="145"
+              title="{{ rev.game_id.title }}">
+          </a>
+          <div class="media-body">
+            <h3 class="media-heading"> <a href={% url 'portal.views.review' rev.id %}>{{ rev.title }}</a><small>{{ rev.author.username }}</small></h3>
+            {{ rev.preview|markdown }}
+          </div>
+        </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div> <!-- end column -->
+  <!-- Right Side -->
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div style="background-color:#333333; color:white;" class="panel-heading">
+        Daily Poll
+      </div>
+      <div class="panel-body">
+	<h3><a href={% url 'portal.views.result' question.id %}>{{ question.question_text }}</a></h3>
+        {% for answer in question.answer_set.all %}
+        <div class="btn-group-vertical" role="group" aria-label="...">
+          <form action={% url 'portal.views.vote' question.id answer.id %} method="post">
+            {% csrf_token %}
+            <button type="button" class="btn btn-primary btn-sm" id="vote_btn" role="button"> {{ answer.answer_text }} </button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script>
+    $( '#navLogo' ).remove();
+  </script>
+{% endblock %}
