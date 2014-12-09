@@ -279,8 +279,6 @@ def userctrl_doreg(request):
       username = request.POST['reg_un']
       email = request.POST['reg_email']
       password = request.POST['reg_pw']
-      print(username)
-      print()
       # Is this username valid?
       if (len(username) > 15):
         regResult = 1
