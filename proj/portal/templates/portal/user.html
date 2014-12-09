@@ -40,11 +40,12 @@
     <!--NOTE: This should be included only if users have the capability of viewing other users.-->
     <!--span class="label label-success pull-up" title="karma points">Karma: {{ karma }}</span-->
 {% block photoshop %}
-<a href={% url 'portal.views.edit_photo' user.id %}> 
-      <button type="button" class="btn btn-default pull-right" type="submit" title="Upload a photo"
+<a role="button" class="btn btn-default" href="{% url 'portal.views.edit_photo' user.id %}">
+Upload a Photo
+</a>
+      <button type="button" class="btn btn-default" type="submit" title="Upload a photo"
       id="photo">Upload a photo</button>
-        </a>
-         <span class="glyphicon glyphicon-upload" color="blue"></span>
+<span class="glyphicon glyphicon-upload pull-left" color="blue"></span>
 {% endblock %}
   </h1>
   <div class="list-group">

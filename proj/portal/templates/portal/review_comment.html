@@ -2,7 +2,7 @@
 {% load bootstrap %}
 {% block errspot %}
    {% if msg %}
-   <h3>{{ msg }}</h3>
+   <div class="alert alert-danger" style="margin-top:15px" role="alert">{{ msg }}</div>
    {% endif %}
 {% endblock %}
 {% block formspot %}
