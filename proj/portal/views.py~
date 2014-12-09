@@ -64,7 +64,7 @@ def review_report(request, review_id):
 
 def review_karma(request, review_id):
     review = Review.objects.get(id=review_id)
-    msg = False
+    msg = None
     form = CommentForm()
     comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
     #Prevent multiple upvotes & anonymous voting
@@ -84,6 +84,7 @@ def review_karma(request, review_id):
 #Allows a user to write comments on review pages.
 def review(request, review_id):
     review = Review.objects.get(id=review_id)
+    msg = None #Error message 
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if request.user.__str__() != "AnonymousUser":
@@ -93,13 +94,15 @@ def review(request, review_id):
                 comment.review_id = Review.objects.get(id=review_id)
                 comment.timestamp = timezone.now()
                 comment.save()
-        return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
-    else:
-        form = CommentForm()
-        comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
-        return render(request, 'portal/review_comment.html', {
-            'form' : form, 'review' : review, 'comments': comment_list})
-
+        else:
+            msg = "Please log in to post a comment"
+        #return HttpResponseRedirect('/djangofett/review/{}'.format(review_id))
+    #else:
+    form = CommentForm()
+    comment_list = Comment.objects.all().filter(review_id=review).order_by('-timestamp')
+    return render(request, 'portal/review_comment.html', {
+        'form' : form, 'review' : review, 
+        'comments' : comment_list, 'msg' : msg})
 
 def review_create(request, game_id):
     if request.method == 'POST':
@@ -176,12 +179,12 @@ request and an edit photo request, hence the different functions.
 """
 def edit_photo(request, user_id):
     u = get_object_or_404(User, pk=user_id)
-    #u = request.user
     if request.method == 'POST':
         form = PhotoForm(request.POST, request.FILES, instance=u)
-        if form.is_valid(): #So this does happen. Hm.It always returns with the stupid default photo.
+        if form.is_valid(): 
             usr = form.save(commit=False)
-            usr.image = request.FILES['image']
+            #Defaults to the generic avatar if user doesn't pick a photo.
+            usr.image = request.FILES.get('image', None)
             usr.save()
             return HttpResponseRedirect('/djangofett/user/{}'.format(user_id))
     form = PhotoForm()
@@ -259,6 +262,30 @@ def game_list(request, platform_id):
 
    for game in results:
       game.review_count = Review.objects.filter(game_id=game.id).count()
+   
+   if platform_id == "pc":
+      context['meta_platform_title'] = "PC"
+
+   elif platform_id == "xbone":
+      context['meta_platform_title'] = "Xbox ONE"
+
+   elif platform_id == "xb360":
+      context['meta_platform_title'] = "Xbox 360"
+
+   elif platform_id == "ps4":
+      context['meta_platform_title'] = "Playstation 4"
+
+   elif platform_id == "ps3":
+      context['meta_platform_title'] = "Playstation 3"
+
+   elif platform_id == "wiiu":
+      context['meta_platform_title'] = "Wii U"
+
+   elif platform_id == "mobile":
+      context['meta_platform_title'] = "Mobile"
+
+   elif platform_id == "ps3":
+      context['meta_platform_title'] = "Playstation 3"
 
    context['game_list'] = results
    context['meta_mode'] = meta_mode
@@ -275,9 +302,11 @@ def userctrl_doreg(request):
       username = request.POST['reg_un']
       email = request.POST['reg_email']
       password = request.POST['reg_pw']
-
       # Is this username valid?
-      if User.objects.filter(username=username).count():
+      if (len(username) > 15):
+        regResult = 1
+        msg = "Please specify a username shorter than 15 characters long"
+      elif (User.objects.filter(username=username).count()):
          # No
          regResult = 1
          msg = "That username is already in use. Please choose another."
