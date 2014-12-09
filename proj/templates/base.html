@@ -18,9 +18,6 @@
    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
    <script src="{% static "js/bootstrap.js" %}"></script>
 
-
-
-
    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
    <!--[if lt IE 9]>
@@ -28,8 +25,12 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
    <![endif]-->
 </head>
-<body style="padding-top: 51px;">
-
+<body>
+  <style>
+    body {
+      padding-top: 51px;
+    }
+  </style>
    <!-- For animation -->
   <style>
       @keyframes animatedBackground {
@@ -65,6 +66,10 @@
       .navbar {
          box-shadow: 0px 3px 5px #333333;
       }
+      .dropdown-menu {
+         width: 300px !important;
+	 background-color:#DDDDDD;
+      }
    </style>
 
    <!-- Navigation Bar -->
@@ -77,7 +82,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/djangofett">
+            <a id="navLogo" class="navbar-brand" href="/djangofett">
                <img  src="{% static "brand_icon.png" %}">
             </a>
          </div>
@@ -99,7 +104,7 @@
                {% csrf_token %}
                <div class="form-group">
                   <div class="input-group">
-                     <input type="text" class="form-control input-sm" name="search_query" placeholder="Search...">
+                     <input type="text" class="form-control input-sm" name="search_query" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" display="block" placeholder="Search...">
                      <span class="input-group-btn">
                         <button class="btn btn-sm btn-primary" type="submit">Search</button>
                      </span>
@@ -148,13 +153,20 @@
                      <form role="form" action="/djangofett/userctrl/doreg/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                           <input type="text" class="form-control" id="inpUsername" name="reg_un" placeholder="Username">
+			   <label for="inpUsername">Username</label>
+                           <input type="text" class="form-control" id="inpUsername" name="reg_un" placeholder="Username" required>
                         </div>
                         <div class="form-group">
-                           <input type="password" class="form-control" id="inpPassword" name="reg_pw" placeholder="Password">
+			   <label for="inpPassword">Password</label>
+                           <input type="password" class="form-control" id="inpPassword" name="reg_pw" placeholder="Password" required>
                         </div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="inpPassword" name="reg_email" placeholder="Email Address">
+			   <label for="inpConfPass">Confirm Password</label>
+                           <input type="password" class="form-control" id="inpConfPass" name="reg_pw" placeholder="Confirm" required>
+                        </div>
+                        <div class="form-group">
+			   <label for="inpEmail">Email Address</label>
+                           <input type="text" class="form-control" id="inpEmail" name="reg_email" placeholder="Email Address" required>
                         </div>
                         <div class="form-group">
                            <button type="submit" class="btn btn-success btn-block">Register</button>
@@ -182,6 +194,10 @@
       </code>
    </div>
 -->
-
+   <script>
+      $(function () {
+         $('[data-toggle="tooltip"]').tooltip()
+       })
+    </script>
 </body>
 </html>

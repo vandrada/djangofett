@@ -4,15 +4,23 @@
 <!-- { question, reviews } -->
 {% block title %}DjangoFett{% endblock %}
 {% block content %}
+<style>
+body {
+  padding-top: 45px;
+}
+
+.jumbotron {
+  background-color:#444444;
+}
+</style>
   <div class="jumbotron">
-	  <center><img  src="{% static "brand_logo.png" %}">
-	 </center>
+    <center><img  src="{% static "brand_logo.png" %}"></center>
   </div>
   <!-- Left side -->
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h2>Reviews  <span class="label label-default left">Recent</span></h2>
+        <h3>Recent Reviews</h2>
       </div>
       <div class="panel-body">
         <ul class="media-list">
@@ -51,4 +59,7 @@
       </div>
     </div>
   </div>
+  <script>
+    $( '#navLogo' ).remove();
+  </script>
 {% endblock %}
