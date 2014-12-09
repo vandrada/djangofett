@@ -48,7 +48,7 @@ class User(AuthUser):
     #max_length for rank changed to 30 to allow full names to display.
     rank = models.CharField(max_length=30, choices=RANK_CHOICES, default=NOOB)
     about = models.CharField(max_length=200, default="")
-    image = models.ImageField(upload_to="games/", null=True)
+    image = models.ImageField(upload_to="games/")
 
     def __str__(self):
         return self.username
